@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout
+		android:layout_width="fill_parent"
+		android:layout_height="fill_parent" xmlns:android="http://schemas.android.com/apk/res/android"
+		>
+	<TextView
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="发送"
+			android:id="@+id/textView" android:layout_alignParentLeft="true" android:layout_alignParentTop="true"
+			android:layout_margin="10dp" android:textColor="#000"/>
+	<TextView
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="1"
+			android:id="@+id/task_config_item_content" android:layout_toRightOf="@+id/textView"
+			android:layout_alignTop="@+id/textView" android:textStyle="bold" android:textColor="#333"/>
+	<TextView
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="至"
+			android:id="@+id/textView1" android:layout_toRightOf="@+id/task_config_item_content"
+			android:layout_alignTop="@+id/textView" android:layout_marginLeft="10dp" android:layout_marginRight="10dp"
+			android:textColor="#000"/>
+	<TextView
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="1066666611"
+			android:id="@+id/task_config_item_spcode" android:layout_toRightOf="@+id/textView1"
+			android:layout_alignTop="@+id/textView" android:textStyle="bold" android:textColor="#333"/>
+	<TextView
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="资费"
+			android:id="@+id/textView2" android:layout_alignLeft="@+id/textView" android:layout_below="@+id/textView"
+			android:layout_marginRight="10dp" android:textColor="#000"/>
+	<TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="1"
+	          android:id="@+id/task_config_item_fee"
+	          android:textStyle="bold" android:textColor="#333" android:layout_toRightOf="@+id/textView"
+	          android:layout_alignTop="@+id/textView2"/>
+	<TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="元/条"
+	          android:id="@+id/textView3"
+	          android:layout_toRightOf="@+id/task_config_item_content" android:layout_alignTop="@+id/textView2"
+	          android:layout_marginLeft="10dp" android:textColor="#000"/>
+	<TextView
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="20"
+			android:id="@+id/task_config_item_total" android:layout_alignParentRight="true" android:layout_alignTop="@+id/textView"
+			android:layout_marginRight="20dp" android:textStyle="bold" android:textColor="#333"
+			android:textSize="35dp"/>
+</RelativeLayout>

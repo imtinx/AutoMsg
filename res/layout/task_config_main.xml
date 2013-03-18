@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" xmlns:android="http://schemas.android.com/apk/res/android"
+        >
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="45dp"
+            android:id="@+id/task_config_label_title" android:layout_alignParentLeft="true" android:layout_alignParentTop="true"
+            android:height="30dp" android:layout_alignParentRight="true" style="@style/task_config_label"
+            android:textSize="20dp" android:textStyle="bold" android:paddingLeft="5dp" android:paddingTop="3dp"/>
+	<TextView
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="发送配置"
+			android:id="@+id/task_config_main_title" android:layout_alignLeft="@+id/task_config_label_title"
+			android:layout_alignParentTop="true" android:layout_marginTop="8dp" android:layout_marginLeft="5dp"
+			android:textColor="#000" android:textSize="25dp" android:textStyle="bold"/>
+	<Button
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="发送"
+			android:id="@+id/task_config_main_btn_send" android:layout_alignRight="@+id/task_config_label_title"
+			android:layout_alignTop="@+id/task_config_label_title" android:width="60dp" android:layout_marginTop="3dp"
+			android:layout_marginRight="5dp" android:background="@drawable/task_config_button"/>
+	<TextView
+			android:layout_width="wrap_content"
+			android:layout_height="100dp"
+			android:id="@+id/textView1" android:layout_alignLeft="@+id/task_config_label_title"
+			android:layout_below="@+id/task_config_label_title"
+			android:layout_alignRight="@+id/task_config_label_title" android:background="#ccc"/>
+	<TextView
+			android:layout_width="wrap_content"
+			android:layout_height="30dp"
+			android:id="@+id/textView2" android:layout_alignLeft="@+id/task_config_label_title"
+			android:layout_below="@+id/textView1" android:layout_alignRight="@+id/task_config_label_title"
+			style="@style/task_config_label"/>
+	<TextView
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="任务明细"
+			android:id="@+id/textView3" android:layout_alignLeft="@+id/task_config_label_title"
+			android:layout_below="@+id/textView1" android:textColor="#000" android:textSize="16dp"
+			android:textStyle="bold" android:paddingLeft="5dp" android:paddingTop="5dp"/>
+	<ListView
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:id="@+id/task_config_main_detaillistview" android:layout_alignLeft="@+id/task_config_label_title"
+			android:layout_below="@+id/textView2" android:layout_alignParentBottom="true" android:background="#ccc"/>
+	<TextView
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="长按可以修改配置"
+			android:id="@+id/textView4"
+			android:paddingRight="10dp" android:layout_alignRight="@+id/task_config_label_title"
+			android:layout_alignBottom="@+id/textView3"/>
+	<TextView
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="总发送"
+			android:id="@+id/textView5" android:layout_alignLeft="@+id/task_config_label_title"
+			android:layout_below="@+id/task_config_label_title" android:layout_marginTop="15dp"
+			android:layout_marginLeft="50dp" android:textColor="#333" android:textStyle="bold"
+			android:paddingLeft="5dp" android:paddingBottom="10dp"/>
+	<TextView
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="148"
+			android:id="@+id/task_config_main_total"
+			android:textSize="30dp" android:textStyle="bold" android:textColor="#333"
+			android:layout_alignLeft="@+id/textView5" android:layout_below="@+id/textView5"/>
+	<TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="总消费"
+	          android:id="@+id/textView7"
+	          android:textColor="#333" android:textStyle="bold"
+	          android:layout_alignRight="@+id/task_config_label_title" android:layout_alignTop="@+id/textView5"
+	          android:layout_marginRight="50dp" android:paddingRight="5dp"/>
+	<TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="148"
+	          android:id="@+id/task_config_main_cost"
+	          android:textSize="30dp" android:textStyle="bold" android:textColor="#333"
+	          android:layout_alignRight="@+id/textView7" android:layout_below="@+id/textView5"/>
+</RelativeLayout>
