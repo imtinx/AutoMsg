@@ -1,14 +1,15 @@
 package com.sohu.wls.app.automsg.taskconfig;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
-import android.widget.ListView;
-import android.widget.TextView;
+import android.widget.*;
+import com.sohu.wls.app.automsg.R;
 
 
 import java.util.ArrayList;
@@ -27,6 +28,8 @@ public class TaskConfigMainActivity extends Activity {
     /** Called when the activity is first created. */
     private ListView taskDetailListView;
     private ConfigListAdapter adapter;
+    private AlertDialog alterConfigItemDialog;
+    private TaskConfigManageService taskConfigManageService;
     @Override
     public void onCreate(Bundle savedInstanceState)
     {
@@ -34,26 +37,110 @@ public class TaskConfigMainActivity extends Activity {
         setContentView(R.layout.task_config_main);
 
         taskDetailListView = (ListView)findViewById(R.id.task_config_main_detaillistview);
-        List<TaskConfigItem> configs = new ArrayList<TaskConfigItem>();
-        Random random = new Random();
 
-        for(int i=0;i<20;i++){
-
-            TaskConfigItem model = new TaskConfigItem();
-            model.setContent((i+1)+"");
-            model.setSpcode("10666666"+i);
-            model.setFee(random.nextInt(2)+1);
-            model.setTotal(random.nextInt(20) + 1);
-
-
-            configs.add(model);
-        }
-
-
+        taskConfigManageService = new TaskConfigManageService();
+        List<TaskConfigItem> configs = taskConfigManageService.initTasks();
         adapter = new ConfigListAdapter(this,configs);
         taskDetailListView.setAdapter(adapter);
+        taskDetailListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+
+            @Override
+            public boolean onItemLongClick(AdapterView<?> adapterView, View view,
+                                           int position, long rowid) {
+                // TODO Auto-generated method stub
+
+
+                AlertDialog d = createAddConfigDialog(TaskConfigMainActivity.this);
+                d.show();
+                TextView contentField = (TextView) d.findViewById(R.id.task_config_item_edit_content);
+                TextView spcodeField = (TextView) d.findViewById(R.id.task_config_item_edit_spcode);
+                TextView feeField = (TextView) d.findViewById(R.id.task_config_item_edit_fee);
+                EditText countField = (EditText) d.findViewById(R.id.task_config_item_edit_count);
+
+                TaskConfigItem configModel = adapter.getConfigs().get(position);
+
+                contentField.setText(configModel.getContent());
+                spcodeField.setText(configModel.getSpcode());
+                feeField.setText(configModel.getFee()+"");
+
+                countField.setText(configModel.getTotal()+"");
+                countField.requestFocus();
+                countField.performClick();
+
+
+                return true;
+            }
+
+        });
+        updateSummaryInfo();
+
 
     }
+
+    /**
+     * 更新发送概况信息
+     */
+    public void updateSummaryInfo(){
+        TextView costField = (TextView) findViewById(R.id.task_config_main_cost);
+        TextView totalField = (TextView) findViewById(R.id.task_config_main_total);
+
+        costField.setText(taskConfigManageService.getTotalSendCost()+"");
+        totalField.setText(taskConfigManageService.getTotalSendNumber()+"");
+    }
+
+    /**
+     * 生成编辑发送详情窗口
+     * @param context
+     * @return
+     */
+    public AlertDialog createAddConfigDialog(final Context context){
+        if(alterConfigItemDialog == null){
+            AlertDialog.Builder builder = new AlertDialog.Builder(context);
+            builder.setIcon(android.R.drawable.ic_dialog_info);
+            builder.setTitle(R.string.task_config_alter_name);
+            LayoutInflater inflater = LayoutInflater.from(context);
+            builder.setView(inflater.inflate(R.layout.task_config_item_edit, null));
+            builder.setPositiveButton(R.string.sure, new DialogInterface.OnClickListener() {
+
+                public void onClick(DialogInterface dialog, int buttonid) {
+                    // TODO Auto-generated method stub
+                    AlertDialog d = (AlertDialog)dialog;
+                    TextView contentField = (TextView) d.findViewById(R.id.task_config_item_edit_content);
+                    TextView spcodeField = (TextView) d.findViewById(R.id.task_config_item_edit_spcode);
+                    EditText countField = (EditText) d.findViewById(R.id.task_config_item_edit_count);
+
+                    if(countField.getText().toString().trim().equals("")){
+                        return;
+                    }
+
+
+                    TaskConfigItem configModel = new TaskConfigItem();
+                    configModel.setContent(contentField.getText().toString());
+                    configModel.setSpcode(spcodeField.getText().toString());
+                    configModel.setTotal(Integer.parseInt(countField.getText().toString()));
+                    taskConfigManageService.editTaskDetail(configModel);
+                    dialog.dismiss();
+
+                    adapter.notifyDataSetChanged();
+                    updateSummaryInfo();
+                }
+            });
+
+            builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+
+                public void onClick(DialogInterface dialog, int arg1) {
+                    // TODO Auto-generated method stub
+
+                    dialog.dismiss();
+                }
+            });
+
+            alterConfigItemDialog = builder.create();
+        }
+
+        return alterConfigItemDialog;
+    }
+
 
     class ConfigListAdapter extends BaseAdapter {
 
