@@ -10,4 +10,4 @@ target/
 .springBeans
 .settings/
 .idea
-.iml
+*.iml

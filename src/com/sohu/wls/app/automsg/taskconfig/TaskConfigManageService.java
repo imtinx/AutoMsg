@@ -1,6 +1,8 @@
 package com.sohu.wls.app.automsg.taskconfig;
 
 import android.util.Log;
+import com.sohu.wls.app.automsg.common.ICommonService;
+import com.sohu.wls.app.automsg.common.UserDetailModel;
 
 import java.util.*;
 
@@ -17,14 +19,15 @@ public class TaskConfigManageService {
      */
     private static Map<String,TaskConfigItem> tasks ;
     private static List<TaskConfigItem> taskList;
-
-    public TaskConfigManageService() {
+    private ICommonService commonService;
+    public TaskConfigManageService(ICommonService commonService) {
         if (tasks == null){
             tasks = new HashMap<String, TaskConfigItem>();
         }
         if (taskList == null){
             taskList = new ArrayList<TaskConfigItem>();
         }
+        this.commonService = commonService;
     }
 
     /**
@@ -37,25 +40,76 @@ public class TaskConfigManageService {
         return model.getContent()+"-"+model.getSpcode();
     }
 
+    public List<TaskConfigItem> fetchOriginalTaskItems(){
+
+        List<TaskConfigItem> items = new ArrayList<TaskConfigItem>();
+
+        items.add(new TaskConfigItem("1","1066666611",1,20));
+        items.add(new TaskConfigItem("19","10661156",1,20));
+        items.add(new TaskConfigItem("4","10661156",1,20));
+        items.add(new TaskConfigItem("B1","106611566",1,20));
+        items.add(new TaskConfigItem("5","1066666675",2,10));
+        items.add(new TaskConfigItem("13","1066666678",2,10));
+        items.add(new TaskConfigItem("21","1066666619",2,10));
+        items.add(new TaskConfigItem("5","1066666695",2,10));
+
+        return items;
+    }
+
     /**
      * 初始化任务列表
      * @return
      */
     public List<TaskConfigItem> initTasks(){
-        Random random = new Random();
 
-        for(int i=0;i<20;i++){
-
-            TaskConfigItem model = new TaskConfigItem();
-            model.setContent((i + 1) + "");
-            model.setSpcode("10666666" + i);
-            model.setFee(random.nextInt(2) + 1);
-            model.setTotal(random.nextInt(20) + 1);
-
-            tasks.put(generateKey(model),model);
-        }
-
+        tasks.clear();
         taskList.clear();
+        UserDetailModel detailModel = commonService.getUserDetail();
+        if (detailModel == null){
+            return taskList;
+        }
+        int cost_max = commonService.getUserDetail().getCost_max();
+        //服务器端获取的发送信息
+        List<TaskConfigItem> originalTasks = fetchOriginalTaskItems();
+
+        if(originalTasks == null){
+            return  taskList;
+        }
+        List<String> keys_cycle = new ArrayList<String>();
+        for(TaskConfigItem item : originalTasks){
+            keys_cycle.add(generateKey(item));
+        }
+        while(true){
+            //逐条增加发送数量
+            for(int i=0;i<originalTasks.size();i++){
+                TaskConfigItem item = originalTasks.get(i);
+                if (!keys_cycle.contains(generateKey(item))){
+                    continue;
+                }
+                if(!tasks.containsKey(generateKey(item))){
+                    tasks.put(generateKey(item),item);
+                }
+
+                //当总消费为负时，不在增加发送数量
+                if(cost_max-item.getFee()<0){
+                    keys_cycle.remove(generateKey(item));
+                    continue;
+                }
+                if (item.getTotal_max()>=item.getTotal()+1){
+                    item.setTotal(item.getTotal()+1);
+                    cost_max -= item.getFee();
+                }else{
+                   keys_cycle.remove(generateKey(item));
+                }
+
+                if(keys_cycle.size()==0){
+                    break;
+                }
+            }
+            if(keys_cycle.size()==0){
+                break;
+            }
+        }
         taskList.addAll(tasks.values());
         return taskList;
     }
@@ -64,14 +118,24 @@ public class TaskConfigManageService {
      * 修改任务发送数量
      * @param model
      */
-    public void editTaskDetail(TaskConfigItem model){
+    public boolean editTaskDetail(TaskConfigItem model){
         Log.i("automsg", generateKey(model) + "  ->  " + model.getTotal());
-        if(tasks.get(generateKey(model)) != null &&
-                model.getTotal()>=0){
-
-            tasks.get(generateKey(model)).setTotal(model.getTotal());
+        if(tasks.get(generateKey(model)) == null ||
+                model.getTotal()<0){
+            return false;
         }
-
+        UserDetailModel detailModel = commonService.getUserDetail();
+        if (detailModel == null){
+            return false;
+        }
+        int cost_max = detailModel.getCost_max();
+        TaskConfigItem old = tasks.get(generateKey(model));
+        //新设置数量导致总消费超限额
+        if((old.getFee()*model.getTotal()-old.getCost()+getTotalSendCost())>cost_max){
+            return false;
+        }
+        old.setTotal(model.getTotal());
+        return true;
     }
 
     /**

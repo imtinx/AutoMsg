@@ -4,10 +4,33 @@
               android:layout_width="fill_parent"
               android:layout_height="fill_parent"
         >
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="手机号"
+            android:id="@+id/textView" android:layout_gravity="left|center_vertical" android:layout_margin="10dp"
+            style="@style/task_config_value"/>
+    <EditText
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/user_detail_phone" android:layout_gravity="left|center_vertical"
+            android:inputType="number"/>
+    <TextView style="@style/task_config_value" android:layout_width="wrap_content" android:layout_height="wrap_content"
+              android:text="月消费上限" android:id="@+id/textView1" android:layout_gravity="left|center_vertical"
+              android:layout_margin="10dp"/>
+    <EditText android:layout_width="fill_parent" android:layout_height="wrap_content"
+              android:id="@+id/user_detail_cost_max" android:layout_gravity="left|center_vertical"
+              android:inputType="number" android:maxLength="3"/>
+    <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Update"
+            android:id="@+id/btn_save_user_detail" android:layout_gravity="center"
+            android:onClick="@string/trigger_user_detail_save"/>
     <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="show task config activity"
-            android:id="@+id/button_task_config" android:layout_gravity="left|center_vertical"/>
+            android:id="@+id/button_task_config" android:layout_gravity="center"/>
 </LinearLayout>
 

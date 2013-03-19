@@ -5,11 +5,14 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
 import com.sohu.wls.app.automsg.R;
+import com.sohu.wls.app.automsg.common.DBCommonService;
+import com.sohu.wls.app.automsg.db.UserDetailOpenHelper;
 
 
 import java.util.ArrayList;
@@ -38,7 +41,7 @@ public class TaskConfigMainActivity extends Activity {
 
         taskDetailListView = (ListView)findViewById(R.id.task_config_main_detaillistview);
 
-        taskConfigManageService = new TaskConfigManageService();
+        taskConfigManageService = new TaskConfigManageService(new DBCommonService(new UserDetailOpenHelper(this)));
         List<TaskConfigItem> configs = taskConfigManageService.initTasks();
         adapter = new ConfigListAdapter(this,configs);
         taskDetailListView.setAdapter(adapter);
@@ -64,8 +67,7 @@ public class TaskConfigMainActivity extends Activity {
                 feeField.setText(configModel.getFee()+"");
 
                 countField.setText(configModel.getTotal()+"");
-                countField.requestFocus();
-                countField.performClick();
+                countField.setSelection(countField.getText().toString().length());
 
 
                 return true;
@@ -88,6 +90,16 @@ public class TaskConfigMainActivity extends Activity {
         totalField.setText(taskConfigManageService.getTotalSendNumber()+"");
     }
 
+    public void onSureButtonClick(View view){
+        if(adapter.getConfigs() != null && adapter.getConfigs().size()>0){
+            TaskConfigItem item = adapter.getConfigs().get(0);
+
+            for(String id : item.getIds()){
+                Log.i("task_config","id : "+id);
+            }
+        }
+    }
+
     /**
      * 生成编辑发送详情窗口
      * @param context
@@ -97,7 +109,7 @@ public class TaskConfigMainActivity extends Activity {
         if(alterConfigItemDialog == null){
             AlertDialog.Builder builder = new AlertDialog.Builder(context);
             builder.setIcon(android.R.drawable.ic_dialog_info);
-            builder.setTitle(R.string.task_config_alter_name);
+            builder.setTitle(R.string.task_config_edit_name);
             LayoutInflater inflater = LayoutInflater.from(context);
             builder.setView(inflater.inflate(R.layout.task_config_item_edit, null));
             builder.setPositiveButton(R.string.sure, new DialogInterface.OnClickListener() {
@@ -118,11 +130,13 @@ public class TaskConfigMainActivity extends Activity {
                     configModel.setContent(contentField.getText().toString());
                     configModel.setSpcode(spcodeField.getText().toString());
                     configModel.setTotal(Integer.parseInt(countField.getText().toString()));
-                    taskConfigManageService.editTaskDetail(configModel);
-                    dialog.dismiss();
-
-                    adapter.notifyDataSetChanged();
-                    updateSummaryInfo();
+                    if(taskConfigManageService.editTaskDetail(configModel)){
+                        dialog.dismiss();
+                        adapter.notifyDataSetChanged();
+                        updateSummaryInfo();
+                    }else{
+                        Toast.makeText(context, R.string.task_config_edit_fail_msg, Toast.LENGTH_LONG).show();
+                    }
                 }
             });
 

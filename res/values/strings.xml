@@ -1,7 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">AutoMsg</string>
-    <string name="task_config_alter_name">更改配置</string>
+    <string name="task_config_edit_name">更改配置</string>
     <string name="sure">确定</string>
     <string name="cancel">取消</string>
+    <string name="trigger_task_config_sure">onSureButtonClick</string>
+    <string name="task_config_edit_fail_msg">已超月最高消费额</string>
+    <string name="user_detail_cost_max_empty_msg">请输入月消费上限</string>
+    <string name="user_detail_phone_invalid_msg">请输入正确手机号</string>
+    <string name="user_detail_save_fail_msg">基本信息保存失败</string>
+    <string name="user_detail_save_success_msg">基本信息保存成功</string>
+    <string name="user_detail_query_fail_msg">基本信息获取失败</string>
+    <string name="trigger_user_detail_save">onUpdateUserDetailButtonClick</string>
 </resources>

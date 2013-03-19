@@ -52,5 +52,5 @@
             android:layout_height="wrap_content"
             android:text="10"
             android:id="@+id/task_config_item_edit_count" android:layout_alignLeft="@+id/task_config_item_edit_content"
-            android:layout_alignTop="@+id/textView5" android:inputType="number"/>
+            android:layout_alignTop="@+id/textView5" android:inputType="number" android:width="80dp"/>
 </RelativeLayout>
