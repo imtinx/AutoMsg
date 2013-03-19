@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <drawable name="task_config_list_item_pressed">#ffffffff</drawable>
+    <drawable name="task_config_list_item">#ffcccccc</drawable>
+</resources>

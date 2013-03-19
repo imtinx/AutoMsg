@@ -4,10 +4,10 @@
               android:layout_width="fill_parent"
               android:layout_height="fill_parent"
         >
-    <TextView
-            android:layout_width="fill_parent"
+    <Button
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Hello World, MyActivity"
-            />
+            android:text="show task config activity"
+            android:id="@+id/button_task_config" android:layout_gravity="left|center_vertical"/>
 </LinearLayout>
 
