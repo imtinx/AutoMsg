@@ -1,8 +1,13 @@
 package com.sohu.wls.app.automsg.common;
 
+import com.sohu.wls.app.automsg.db.TaskDetailOpenHelper;
 import com.sohu.wls.app.automsg.db.UserDetailOpenHelper;
 import com.sohu.wls.app.automsg.taskconfig.TaskConfigItem;
+import com.sohu.wls.app.automsg.util.DatetimeUtil;
 
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 /**
@@ -15,9 +20,11 @@ import java.util.List;
 public class DBCommonService implements ICommonService {
 
     private UserDetailOpenHelper userDetailOpenHelper;
+    private TaskDetailOpenHelper taskDetailOpenHelper;
 
-    public DBCommonService(UserDetailOpenHelper userDetailOpenHelper) {
+    public DBCommonService(UserDetailOpenHelper userDetailOpenHelper, TaskDetailOpenHelper taskDetailOpenHelper) {
         this.userDetailOpenHelper = userDetailOpenHelper;
+        this.taskDetailOpenHelper = taskDetailOpenHelper;
     }
 
     @Override
@@ -31,11 +38,22 @@ public class DBCommonService implements ICommonService {
 
     @Override
     public List<TaskConfigItem> getSMSCommandDetail() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+         return null;
     }
 
     @Override
     public List<SMSTaskModel> getCurrentMonthSMSTaskDetail() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return taskDetailOpenHelper.queryTasks(DatetimeUtil.getCurrentYear(),DatetimeUtil.getCurrentMonth());
     }
+
+    @Override
+    public void addSMSTask(SMSTaskModel task) throws Exception {
+        taskDetailOpenHelper.addTask(task);
+    }
+
+    @Override
+    public void updateSMSTask(SMSTaskModel task) throws Exception {
+        taskDetailOpenHelper.updateTask(task);
+    }
+
 }

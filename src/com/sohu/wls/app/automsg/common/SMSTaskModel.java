@@ -11,6 +11,22 @@ import java.util.Date;
  * 发送任务
  */
 public class SMSTaskModel {
+    /**
+     * 已发送短信
+     */
+    public static final String VALUE_SENDED = "1";
+    /**
+     * 未发送短信
+     */
+    public static final String VALUE_NOT_SENDED = "0";
+    /**
+     * 已接收回复短信
+     */
+    public static final String VALUE_RECEIVED = "1";
+    /**
+     * 未收到回复短信
+     */
+    public static final String VALUE_NOT_RECEIVED = "0";
     private String task_id;
     private String sms_content;
     private String sms_destnumber;
@@ -20,6 +36,14 @@ public class SMSTaskModel {
     private int month;
     private Date starttime;
     private Date recivetime;
+
+    public SMSTaskModel(String task_id, String sms_content, String sms_destnumber, int year, int month) {
+        this.task_id = task_id;
+        this.sms_content = sms_content;
+        this.sms_destnumber = sms_destnumber;
+        this.year = year;
+        this.month = month;
+    }
 
     /**
      * 任务ID

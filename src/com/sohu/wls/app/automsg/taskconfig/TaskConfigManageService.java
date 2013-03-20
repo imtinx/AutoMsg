@@ -169,4 +169,8 @@ public class TaskConfigManageService {
 
         return sum;
     }
+
+    public ICommonService getCommonService() {
+        return commonService;
+    }
 }

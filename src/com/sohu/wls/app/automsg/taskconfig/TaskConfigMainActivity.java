@@ -12,7 +12,10 @@ import android.view.ViewGroup;
 import android.widget.*;
 import com.sohu.wls.app.automsg.R;
 import com.sohu.wls.app.automsg.common.DBCommonService;
+import com.sohu.wls.app.automsg.common.SMSTaskModel;
+import com.sohu.wls.app.automsg.db.TaskDetailOpenHelper;
 import com.sohu.wls.app.automsg.db.UserDetailOpenHelper;
+import com.sohu.wls.app.automsg.util.DatetimeUtil;
 
 
 import java.util.ArrayList;
@@ -41,7 +44,7 @@ public class TaskConfigMainActivity extends Activity {
 
         taskDetailListView = (ListView)findViewById(R.id.task_config_main_detaillistview);
 
-        taskConfigManageService = new TaskConfigManageService(new DBCommonService(new UserDetailOpenHelper(this)));
+        taskConfigManageService = new TaskConfigManageService(new DBCommonService(new UserDetailOpenHelper(this), new TaskDetailOpenHelper(this)));
         List<TaskConfigItem> configs = taskConfigManageService.initTasks();
         adapter = new ConfigListAdapter(this,configs);
         taskDetailListView.setAdapter(adapter);
@@ -91,12 +94,26 @@ public class TaskConfigMainActivity extends Activity {
     }
 
     public void onSureButtonClick(View view){
-        if(adapter.getConfigs() != null && adapter.getConfigs().size()>0){
-            TaskConfigItem item = adapter.getConfigs().get(0);
+        TextView totalField = (TextView) findViewById(R.id.task_config_main_total);
 
-            for(String id : item.getIds()){
-                Log.i("task_config","id : "+id);
-            }
+        if(adapter.getConfigs() != null && adapter.getConfigs().size()>0
+                && !totalField.getText().toString().equals("0")){
+            int year = DatetimeUtil.getCurrentYear();
+            int month = DatetimeUtil.getCurrentMonth();
+             for (TaskConfigItem item : adapter.getConfigs()){
+                 for (String id : item.getIds()){
+                     SMSTaskModel task = new SMSTaskModel(id,item.getContent(),item.getSpcode(),year,month);
+                     try {
+                         taskConfigManageService.getCommonService().addSMSTask(task);
+                     } catch (Exception e) {
+                         Toast.makeText(this, "添加任务["+id+"]失败", Toast.LENGTH_LONG).show();
+                     }
+                 }
+             }
+
+            Toast.makeText(this, "保存任务成功", Toast.LENGTH_LONG).show();
+        }else{
+            Toast.makeText(this, R.string.task_config_send_none_msg, Toast.LENGTH_LONG).show();
         }
     }
 

@@ -24,7 +24,7 @@ public class UserDetailOpenHelper extends SQLiteOpenHelper {
     private static final String KEY_COST_MAX = "cost_max";
     private static final String SQL_TABLE_CREATE =  "CREATE TABLE " + USERDETAIL_TABLE_NAME + " (" +
             COLUMN_NAME + " TEXT, " +
-            COLUMN_VALUE + " INT);";
+            COLUMN_VALUE + " TEXT);";
 
 
     public UserDetailOpenHelper(Context context) {

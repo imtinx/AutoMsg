@@ -28,6 +28,11 @@
             android:id="@+id/btn_save_user_detail" android:layout_gravity="center"
             android:onClick="@string/trigger_user_detail_save"/>
     <Button
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="querytasks"
+            android:id="@+id/btn_query_tasks" android:onClick="queryAllTasks"/>
+    <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="show task config activity"

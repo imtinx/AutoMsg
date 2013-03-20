@@ -20,7 +20,7 @@
 	<Button
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
-			android:text="发送"
+			android:text="确定"
 			android:id="@+id/task_config_main_btn_send" android:layout_alignRight="@+id/task_config_label_title"
 			android:layout_alignTop="@+id/task_config_label_title" android:width="60dp" android:layout_marginTop="3dp"
 			android:layout_marginRight="5dp" android:background="@drawable/task_config_button"

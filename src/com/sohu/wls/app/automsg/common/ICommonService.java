@@ -30,4 +30,17 @@ public interface ICommonService {
      * @return
      */
     public List<SMSTaskModel> getCurrentMonthSMSTaskDetail();
+
+    /**
+     * 增加任务
+     * @param task
+     */
+    public void addSMSTask(SMSTaskModel task) throws Exception;
+
+    /**
+     * 更新任务状态
+     * task_id为必须值
+     * @param task
+     */
+    public void updateSMSTask(SMSTaskModel task) throws Exception;
 }

@@ -3,20 +3,27 @@ package com.sohu.wls.app.automsg;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+import com.sohu.wls.app.automsg.common.SMSTaskModel;
 import com.sohu.wls.app.automsg.common.UserDetailModel;
+import com.sohu.wls.app.automsg.db.TaskDetailOpenHelper;
 import com.sohu.wls.app.automsg.db.UserDetailOpenHelper;
 import com.sohu.wls.app.automsg.taskconfig.TaskConfigMainActivity;
+import com.sohu.wls.app.automsg.util.DatetimeUtil;
 import org.apache.http.protocol.HttpService;
+
+import java.util.List;
 
 public class MyActivity extends Activity {
     /**
      * Called when the activity is first created.
      */
     private UserDetailOpenHelper userDetailOpenHelper;
+    private TaskDetailOpenHelper taskDetailOpenHelper;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -24,6 +31,9 @@ public class MyActivity extends Activity {
 
         if (userDetailOpenHelper == null){
             userDetailOpenHelper = new UserDetailOpenHelper(this);
+        }
+        if (taskDetailOpenHelper == null){
+            taskDetailOpenHelper = new TaskDetailOpenHelper(this);
         }
         EditText phoneField = (EditText) findViewById(R.id.user_detail_phone);
         EditText costmaxField = (EditText) findViewById(R.id.user_detail_cost_max);
@@ -73,6 +83,14 @@ public class MyActivity extends Activity {
             Toast.makeText(this, R.string.user_detail_save_success_msg, Toast.LENGTH_LONG).show();
         } catch (Exception e) {
             Toast.makeText(this, R.string.user_detail_save_fail_msg+"["+e.getMessage()+"]", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    public void queryAllTasks(View view){
+        List<SMSTaskModel> tasks = taskDetailOpenHelper.queryTasks(DatetimeUtil.getCurrentYear(),DatetimeUtil.getCurrentMonth());
+        for (SMSTaskModel task : tasks){
+            Log.i("task_config",task.getTask_id()+"  "+task.getSms_content()+"  "+task.getSms_destnumber()+"  "+task.getYear()+"  "+task.getMonth()+"  "+task.isSms_sended()+"  "+task.isSms_received()+"  "+
+            task.getStarttime()+"  "+task.getRecivetime());
         }
     }
 }
