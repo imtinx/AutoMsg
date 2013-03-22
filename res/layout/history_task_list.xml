@@ -1,31 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<TableLayout
+<RelativeLayout
         android:layout_width="fill_parent"
         android:layout_height="fill_parent" xmlns:android="http://schemas.android.com/apk/res/android">
-    <TableRow
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent">
-        <TextView
-                android:layout_width="200dp"
-                android:layout_height="wrap_content"
-                android:text="2013-01"
-                android:id="@+id/history_month" android:layout_column="0" android:textSize="25sp"
-                />
-        <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="扣费148元"
-                android:id="@+id/history_expenses" android:layout_column="5" android:textSize="25sp"/>
-    </TableRow>
-    <TableRow
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent">
-        <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="需发送110条 实际发送110条 回复110条"
-                android:id="@+id/history_result" android:layout_column="0" android:layout_span="6"
-                android:layout_gravity="center_horizontal" android:paddingTop="10dp" android:textSize="15sp"/>
-    </TableRow>
-</TableLayout>
+    <TextView
+            android:layout_width="103dp"
+            android:layout_height="wrap_content"
+            android:text="2013-11"
+            android:id="@+id/task_month" android:layout_alignParentLeft="true" android:layout_alignParentTop="true"
+            android:textSize="25sp"/>
+    <TextView
+            android:layout_width="58dp"
+            android:layout_height="wrap_content"
+            android:text="扣费 148 元"
+            android:id="@+id/task_expenses" android:layout_alignParentRight="true" android:layout_alignTop="@+id/task_month"
+            android:layout_alignParentLeft="true" android:layout_marginLeft="182dp"
+            android:layout_alignBottom="@+id/task_month" android:textSize="25sp"/>
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="需发送200条 已发送200条 已回复200条"
+            android:id="@+id/task_result" android:layout_alignLeft="@+id/task_month" android:layout_below="@+id/task_month"
+            android:layout_alignRight="@+id/task_expenses" android:gravity="center_horizontal"/>
+</RelativeLayout>

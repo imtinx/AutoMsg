@@ -1,4 +1,4 @@
-package com.sohu.wls.app.automsg.history;
+package com.sohu.wls.app.automsg.tasklist;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -32,8 +32,8 @@ public class HistoryTaskActivity extends Activity {
         }
         );
         SimpleAdapter adapter =   new SimpleAdapter(this,
-                getHistoryTaskList(),R.layout.history_task_list, new String[]{"history_month","history_expenses","history_result"},
-                new int[]{R.id.history_month,R.id.history_expenses,R.id.history_result});
+                getHistoryTaskList(),R.layout.history_task_list, new String[]{"task_month","task_expenses","task_result"},
+                new int[]{R.id.task_month,R.id.task_expenses,R.id.task_result});
 
         historyList.setAdapter(adapter);
     }
@@ -46,15 +46,15 @@ public class HistoryTaskActivity extends Activity {
         List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
 
         Map<String, Object> map = new HashMap<String, Object>();
-        map.put("history_month", "2013-11");
+        map.put("task_month", "2013-11");
 
-        String historyExpenses = getResources().getString(R.string.history_expenses);
-        historyExpenses = String.format(historyExpenses,200);
-        map.put("history_expenses",historyExpenses);
+        String taskExpenses = getResources().getString(R.string.task_expenses);
+        taskExpenses = String.format(taskExpenses,200);
+        map.put("task_expenses",taskExpenses);
 
-        String historyResult = getResources().getString(R.string.history_result);
-        historyResult = String.format(historyResult, 110, 110, 110);
-        map.put("history_result", historyResult);
+        String taskResult = getResources().getString(R.string.task_result);
+        taskResult = String.format(taskResult, 110, 110, 110);
+        map.put("task_result", taskResult);
 
         list.add(map);
 
