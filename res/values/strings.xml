@@ -13,4 +13,9 @@
     <string name="user_detail_save_success_msg">基本信息保存成功</string>
     <string name="user_detail_query_fail_msg">基本信息获取失败</string>
     <string name="trigger_user_detail_save">onUpdateUserDetailButtonClick</string>
+    <!-- add by chaocui200783-->
+    <string name="history_title">历史任务状态</string>
+    <string name="history_expenses">扣费%1$d元</string>
+    <string name="history_result">需发送%1$d条 实际发送%2$d条 回复%3$d条</string>
+
 </resources>
