@@ -16,8 +16,10 @@
     <!-- add by chaocui200783-->
     <string name="history_task_title">历史任务状态</string>
     <string name="task_expenses">扣费 %1$d 元</string>
-    <string name="task_result">需发送%1$d条 实际发送%2$d条 回复%3$d条</string>
+    <string name="task_result">需发送%1$d条 已发送%2$d条 回复%3$d条</string>
     <string name="task_status_title">任务状态</string>
     <string name="task_command">发送 %1$s 至 %2$s</string>
+    <string name="task_continue">继续</string>
+    <string name="task_pause">暂停</string>
 
 </resources>
