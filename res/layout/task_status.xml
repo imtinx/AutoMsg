@@ -1,24 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:orientation="vertical"
               android:layout_width="match_parent"
               android:layout_height="match_parent">
 
     <TextView
-            android:layout_width="fill_parent"
+            android:layout_width="135dp"
             android:layout_height="50dp"
             android:text="@string/task_status_title"
-            android:id="@+id/task_status_title" android:layout_gravity="left|center_vertical" android:textSize="32sp"/>
+            android:id="@+id/task_status_title" android:layout_gravity="left|center_vertical" android:textSize="32sp"
+            android:layout_alignParentLeft="true" android:layout_marginLeft="0dp" android:layout_alignParentTop="true"
+            android:layout_marginTop="0dp"/>
 
     <View
             android:layout_width="fill_parent"
             android:layout_height="1px"
             android:background="?android:attr/listDivider"
-            />
+            android:id="@+id/view" android:layout_alignParentLeft="true" android:layout_marginLeft="7dp"
+            android:layout_below="@+id/task_status_title"/>
 
     <ListView
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:id="@+id/task_status_list" android:layout_gravity="center"/>
-</LinearLayout>
+            android:id="@+id/task_status_list" android:layout_gravity="center" android:layout_alignParentLeft="true"
+            android:layout_marginLeft="0dp"
+            android:layout_below="@+id/task_status_text"/>
+    <Button
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:id="@+id/send_controller"
+            android:layout_alignRight="@+id/view" android:layout_alignTop="@+id/task_status_title"
+            android:layout_marginTop="5dp"/>
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="60dp"
+            android:text="需发送000条 已发送000条 回复000条"
+            android:id="@+id/task_status_text" android:layout_alignLeft="@+id/task_status_title"
+            android:layout_below="@+id/task_status_title" android:layout_alignRight="@+id/view"
+            android:gravity="center_vertical|center_horizontal" android:textSize="15sp"/>
+</RelativeLayout>
