@@ -56,4 +56,12 @@ public class UserDetailModel {
     public void setCost_max(int cost_max) {
         this.cost_max = cost_max;
     }
+
+    @Override
+    public String toString() {
+        return "UserDetailModel{" +
+                "phone_number='" + phone_number + '\'' +
+                ", cost_max=" + cost_max +
+                '}';
+    }
 }

@@ -149,4 +149,19 @@ public class SMSTaskModel {
     public void setRecivetime(Date recivetime) {
         this.recivetime = recivetime;
     }
+
+    @Override
+    public String toString() {
+        return "SMSTaskModel{" +
+                "task_id='" + task_id + '\'' +
+                ", sms_content='" + sms_content + '\'' +
+                ", sms_destnumber='" + sms_destnumber + '\'' +
+                ", sms_sended=" + sms_sended +
+                ", sms_received=" + sms_received +
+                ", year=" + year +
+                ", month=" + month +
+                ", starttime=" + starttime +
+                ", recivetime=" + recivetime +
+                '}';
+    }
 }
