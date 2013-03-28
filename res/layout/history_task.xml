@@ -3,13 +3,15 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:orientation="vertical"
               android:layout_width="match_parent"
-              android:layout_height="match_parent">
+              android:layout_height="match_parent" style="@style/task_config_label">
 
     <TextView
             android:layout_width="fill_parent"
             android:layout_height="50dp"
             android:text="@string/history_task_title"
-            android:id="@+id/history_task_title" android:layout_gravity="left|center_vertical" android:textSize="32sp"/>
+            android:id="@+id/history_task_title" android:layout_gravity="left|center_vertical" android:textSize="25dp"
+            android:textColor="#333" style="@style/task_config_label" android:layout_marginLeft="5dp"
+            android:gravity="center_vertical" android:textStyle="bold"/>
 
     <View
             android:layout_width="fill_parent"
@@ -20,5 +22,5 @@
     <ListView
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:id="@+id/history_task_list" android:layout_gravity="center"/>
+            android:id="@+id/history_task_list" android:layout_gravity="center" style="@style/task_config_label"/>
 </LinearLayout>

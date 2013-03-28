@@ -3,15 +3,16 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:orientation="vertical"
               android:layout_width="match_parent"
-              android:layout_height="match_parent">
+              android:layout_height="match_parent" style="@style/task_config_label">
 
     <TextView
             android:layout_width="135dp"
             android:layout_height="50dp"
             android:text="@string/task_status_title"
-            android:id="@+id/task_status_title" android:layout_gravity="left|center_vertical" android:textSize="32sp"
-            android:layout_alignParentLeft="true" android:layout_marginLeft="0dp" android:layout_alignParentTop="true"
-            android:layout_marginTop="0dp"/>
+            android:id="@+id/task_status_title" android:layout_gravity="left|center_vertical" android:textSize="25dp"
+            android:layout_alignParentLeft="true" android:layout_marginLeft="5dp" android:layout_alignParentTop="true"
+            android:layout_marginTop="0dp" android:textColor="#333" style="@style/task_config_label"
+            android:textStyle="bold" android:autoText="false" android:gravity="center_vertical"/>
 
     <View
             android:layout_width="fill_parent"
@@ -23,20 +24,61 @@
     <ListView
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:id="@+id/task_status_list" android:layout_gravity="center" android:layout_alignParentLeft="true"
-            android:layout_marginLeft="0dp"
-            android:layout_below="@+id/task_status_text"/>
+            android:id="@+id/task_status_list" android:layout_gravity="center"
+            android:background="#ccc" android:layout_alignLeft="@+id/task_status_text"
+            android:layout_alignParentBottom="true" android:layout_below="@+id/task_status_detail_view"/>
     <Button
             android:layout_width="wrap_content"
             android:layout_height="40dp"
             android:id="@+id/send_controller"
             android:layout_alignRight="@+id/view" android:layout_alignTop="@+id/task_status_title"
-            android:layout_marginTop="5dp"/>
+            android:layout_marginTop="5dp" android:background="@drawable/task_config_button"
+            android:layout_marginRight="5dp"/>
     <TextView
             android:layout_width="wrap_content"
-            android:layout_height="60dp"
-            android:text="需发送000条 已发送000条 回复000条"
-            android:id="@+id/task_status_text" android:layout_alignLeft="@+id/task_status_title"
-            android:layout_below="@+id/task_status_title" android:layout_alignRight="@+id/view"
-            android:gravity="center_vertical|center_horizontal" android:textSize="15sp"/>
+            android:layout_height="100dp"
+            android:id="@+id/task_status_text"
+            android:gravity="center_vertical|center_horizontal" android:textSize="17sp" android:background="#ccc"
+            android:textColor="#333" android:textStyle="bold" android:layout_alignParentLeft="true"
+            android:layout_below="@+id/task_status_title" android:layout_alignRight="@+id/view"/>
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:text="@string/task_status_detail"
+            android:id="@+id/task_status_detail_view"
+            android:textStyle="bold" android:textSize="16dp" android:textColor="#000"
+            android:gravity="center_vertical" style="@style/task_config_label"
+            android:layout_toLeftOf="@+id/send_controller" android:layout_below="@+id/task_status_text"
+            android:layout_alignLeft="@+id/task_status_title" android:layout_alignRight="@+id/view"/>
+
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/task_status_expect"
+            android:id="@+id/task_status_expect_view" android:layout_alignLeft="@+id/task_status_title"
+            android:layout_below="@+id/task_status_title" android:layout_marginTop="15dp"
+            android:layout_marginLeft="50dp" android:textColor="#333" android:textStyle="bold"
+            android:paddingLeft="5dp" android:paddingBottom="10dp"/>
+    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/task_status_sent"
+              android:id="@+id/task_status_sent_view"
+              android:textColor="#333" android:textStyle="bold"
+              android:paddingLeft="5dp" android:paddingBottom="10dp"
+              android:layout_toRightOf="@+id/task_status_title" android:layout_alignTop="@+id/task_status_expect_view"/>
+    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/task_status_replied"
+              android:id="@+id/task_status_replied_view" android:textColor="#333" android:textStyle="bold" android:paddingLeft="5dp"
+              android:paddingBottom="10dp"
+              android:layout_alignRight="@+id/send_controller" android:layout_alignTop="@+id/task_status_expect_view"
+              android:layout_marginRight="50dp"/>
+    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="110"
+              android:id="@+id/task_status_expect_text" android:textSize="30dp" android:textStyle="bold"
+              android:textColor="#333"
+              android:layout_alignLeft="@+id/task_status_expect_view" android:layout_below="@+id/task_status_expect_view"/>
+    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="110"
+              android:id="@+id/task_status_sent_text" android:textSize="30dp" android:textStyle="bold"
+              android:textColor="#333" android:layout_toRightOf="@+id/task_status_title"
+              android:layout_below="@+id/task_status_expect_view"/>
+    <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="110"
+              android:id="@+id/task_status_replied_text" android:textSize="30dp" android:textStyle="bold"
+              android:textColor="#333"
+              android:layout_alignLeft="@+id/task_status_replied_view" android:layout_below="@+id/task_status_expect_view"/>
 </RelativeLayout>

@@ -2,18 +2,21 @@
 
 <RelativeLayout
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent" xmlns:android="http://schemas.android.com/apk/res/android">
+        android:layout_height="fill_parent" xmlns:android="http://schemas.android.com/apk/res/android"
+        android:background="@drawable/task_config_detail_list_item">
     <TextView
             android:layout_width="164dp"
             android:layout_height="25dp"
             android:text="发送1至1066666611"
             android:id="@+id/task_command" android:layout_alignParentLeft="true" android:layout_alignParentTop="true"
-            android:textSize="15sp" android:layout_alignParentRight="true"/>
+            android:textSize="15sp" android:layout_alignParentRight="true" android:textStyle="bold"
+            android:textColor="#333" android:gravity="center_vertical"/>
     <TextView
-            android:layout_width="199dp"
+            android:layout_width="fill_parent"
             android:layout_height="25dp"
             android:text="需发送200条 已发送200条 已回复200条"
             android:id="@+id/task_result"
             android:layout_below="@+id/task_command" android:layout_alignParentRight="true"
-            android:layout_alignLeft="@+id/task_command" android:gravity="center_horizontal"/>
+            android:layout_alignLeft="@+id/task_command" android:gravity="center_vertical|center_horizontal" android:textColor="#333"
+            android:textStyle="bold"/>
 </RelativeLayout>
