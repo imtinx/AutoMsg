@@ -3,94 +3,33 @@ package com.sohu.wls.app.automsg;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.Toast;
-import com.sohu.wls.app.automsg.common.SMSTaskModel;
-import com.sohu.wls.app.automsg.common.UserDetailModel;
-import com.sohu.wls.app.automsg.db.TaskDetailOpenHelper;
-import com.sohu.wls.app.automsg.db.UserDetailOpenHelper;
 import com.sohu.wls.app.automsg.taskconfig.TaskConfigMainActivity;
-import com.sohu.wls.app.automsg.util.DatetimeUtil;
-import org.apache.http.protocol.HttpService;
+import com.sohu.wls.app.automsg.tasklist.TaskStatusActivity;
 
-import java.util.List;
 
 public class MyActivity extends Activity {
-    /**
-     * Called when the activity is first created.
-     */
-    private UserDetailOpenHelper userDetailOpenHelper;
-    private TaskDetailOpenHelper taskDetailOpenHelper;
+
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
 
-        if (userDetailOpenHelper == null){
-            userDetailOpenHelper = new UserDetailOpenHelper(this);
-        }
-        if (taskDetailOpenHelper == null){
-            taskDetailOpenHelper = new TaskDetailOpenHelper(this);
-        }
-        EditText phoneField = (EditText) findViewById(R.id.user_detail_phone);
-        EditText costmaxField = (EditText) findViewById(R.id.user_detail_cost_max);
 
-        try {
-            UserDetailModel detailModel = userDetailOpenHelper.queryUserDetailInfo();
-            phoneField.setText(detailModel.getPhone_number());
-            costmaxField.setText(detailModel.getCost_max()+"");
-        } catch (Exception e) {
-            Toast.makeText(this, R.string.user_detail_query_fail_msg+"["+e.getMessage()+"]", Toast.LENGTH_LONG).show();
-            e.printStackTrace();
-        }
-
-        Button button = (Button) findViewById(R.id.button_task_config);
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //To change body of implemented methods use File | Settings | File Templates.
-                Intent intent = new Intent();
-                intent.setClass(MyActivity.this, TaskConfigMainActivity.class);
-                startActivity(intent);
-            }
-        });
     }
 
-    public void onUpdateUserDetailButtonClick(View view){
-        EditText phoneField = (EditText) findViewById(R.id.user_detail_phone);
-        EditText costmaxField = (EditText) findViewById(R.id.user_detail_cost_max);
-
-        String phone = phoneField.getText().toString();
-        int costmax = 0;
-        if(costmaxField.getText().toString() == null || costmaxField.getText().toString().equals("")){
-            Toast.makeText(this, R.string.user_detail_cost_max_empty_msg, Toast.LENGTH_LONG).show();
-            return;
-        }else{
-            costmax = Integer.parseInt(costmaxField.getText().toString());
+    public void onItemClick(View view){
+        Intent intent = new Intent();
+        if (view.getId() == R.id.nav_user_detail){
+            intent.setClass(this,UserDetailManageActivity.class);
+        }else if (view.getId() == R.id.nav_task_config){
+            intent.setClass(this, TaskConfigMainActivity.class);
+        }else if (view.getId() == R.id.nav_task_status){
+            intent.setClass(this, TaskStatusActivity.class);
         }
-        if (phone.length()!=11 || !phone.startsWith("1")){
-            Toast.makeText(this, R.string.user_detail_phone_invalid_msg, Toast.LENGTH_LONG).show();
-            return;
-        }
-
-        UserDetailModel detailModel = new UserDetailModel(phone,costmax);
-
-        try {
-            userDetailOpenHelper.updateUserDetail(detailModel);
-            Toast.makeText(this, R.string.user_detail_save_success_msg, Toast.LENGTH_LONG).show();
-        } catch (Exception e) {
-            Toast.makeText(this, R.string.user_detail_save_fail_msg+"["+e.getMessage()+"]", Toast.LENGTH_LONG).show();
-        }
+        startActivity(intent);
     }
 
-    public void queryAllTasks(View view){
-        List<SMSTaskModel> tasks = taskDetailOpenHelper.queryTasks(DatetimeUtil.getCurrentYear(),DatetimeUtil.getCurrentMonth());
-        for (SMSTaskModel task : tasks){
-            Log.i("task_config",task.getTask_id()+"  "+task.getSms_content()+"  "+task.getSms_destnumber()+"  "+task.getYear()+"  "+task.getMonth()+"  "+task.isSms_sended()+"  "+task.isSms_received()+"  "+
-            task.getStarttime()+"  "+task.getRecivetime());
-        }
-    }
+
 }

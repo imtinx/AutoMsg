@@ -44,15 +44,19 @@ public class TaskConfigManageService {
 
         List<TaskConfigItem> items = new ArrayList<TaskConfigItem>();
 
-        items.add(new TaskConfigItem("1","1066666611",1,20));
-        items.add(new TaskConfigItem("19","10661156",1,20));
-        items.add(new TaskConfigItem("4","10661156",1,20));
-        items.add(new TaskConfigItem("B1","106611566",1,20));
-        items.add(new TaskConfigItem("5","1066666675",2,10));
-        items.add(new TaskConfigItem("13","1066666678",2,10));
-        items.add(new TaskConfigItem("21","1066666619",2,10));
-        items.add(new TaskConfigItem("5","1066666695",2,10));
-
+//        items.add(new TaskConfigItem("1","1066666611",1,20));
+//        items.add(new TaskConfigItem("19","10661156",1,20));
+//        items.add(new TaskConfigItem("4","10661156",1,20));
+//        items.add(new TaskConfigItem("B1","106611566",1,20));
+//        items.add(new TaskConfigItem("5","1066666675",2,10));
+//        items.add(new TaskConfigItem("13","1066666678",2,10));
+//        items.add(new TaskConfigItem("21","1066666619",2,10));
+//        items.add(new TaskConfigItem("5","1066666695",2,10));
+        items.add(new TaskConfigItem("cxye","10086",2,10));
+        items.add(new TaskConfigItem("cxgll","10086",1,10));
+        items.add(new TaskConfigItem("CXBX","10086",1,10));
+        items.add(new TaskConfigItem("CXGFX","10086",2,10));
+        items.add(new TaskConfigItem("CXCCT","10086",2,10));
         return items;
     }
 

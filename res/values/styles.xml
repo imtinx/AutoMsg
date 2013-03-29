@@ -3,6 +3,10 @@
 <style name="task_config_label">
        <item name="android:background">#fff</item>
        <item name="android:textColor">#000</item>
+    <item name="android:textStyle">bold</item>
+    <item name="android:textSize">16dp</item>
+    <item name="android:padding">10dp</item>
+
 </style>
 <style name="task_config_value">
     <item name="android:textColor">#ccc</item>

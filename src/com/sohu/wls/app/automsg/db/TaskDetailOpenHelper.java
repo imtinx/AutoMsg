@@ -7,7 +7,9 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 import com.sohu.wls.app.automsg.common.SMSTaskModel;
+import com.sohu.wls.app.automsg.taskconfig.TaskConfigMainActivity;
 import com.sohu.wls.app.automsg.util.DatetimeUtil;
+import com.sohu.wls.app.automsg.util.SMSUtil;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -44,7 +46,7 @@ public class TaskDetailOpenHelper extends SQLiteOpenHelper {
             COLUMN_STARTTIME + " TEXT," +
             COLUMN_RECEIVETIME + " TEXT );";
 
-    private static final SimpleDateFormat DATE_FORMATOR = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
 
     public TaskDetailOpenHelper(Context context) {
         super(context, TASKDETAIL_TABLE_NAME, null, DATABASE_VERSION);
@@ -75,12 +77,13 @@ public class TaskDetailOpenHelper extends SQLiteOpenHelper {
         detectNecessaryField(task);
 
         SQLiteDatabase db = getDB();
-
+        Cursor cursor = null;
         try {
-            Cursor cursor = db.rawQuery("SELECT COUNT(1) FROM " + TASKDETAIL_TABLE_NAME + " WHERE " +
+            cursor = db.rawQuery("SELECT COUNT(1) FROM " + TASKDETAIL_TABLE_NAME + " WHERE " +
                     COLUMN_ID + "='" + task.getTask_id() + "'", null);
 
             if (cursor.moveToNext() && cursor.getInt(0) > 0){
+
                 throw new RuntimeException("task id is exist");
             }
 
@@ -105,6 +108,9 @@ public class TaskDetailOpenHelper extends SQLiteOpenHelper {
         } catch (RuntimeException e) {
             throw e;
         } finally {
+            if (cursor != null){
+                cursor.close();
+            }
             db.close();
         }
     }
@@ -138,11 +144,11 @@ public class TaskDetailOpenHelper extends SQLiteOpenHelper {
         }
 
         if (task.getStarttime() != null){
-             buffer.append(COLUMN_STARTTIME + "='" + DATE_FORMATOR.format(task.getStarttime()) + "',");
+             buffer.append(COLUMN_STARTTIME + "='" + DatetimeUtil.formatDate(task.getStarttime()) + "',");
         }
 
         if (task.getRecivetime() != null){
-            buffer.append(COLUMN_RECEIVETIME + "='" + DATE_FORMATOR.format(task.getRecivetime()) + "',");
+            buffer.append(COLUMN_RECEIVETIME + "='" + DatetimeUtil.formatDate(task.getRecivetime()) + "',");
         }
 
         if(buffer.toString().endsWith(",")){
@@ -152,7 +158,7 @@ public class TaskDetailOpenHelper extends SQLiteOpenHelper {
         buffer.append(" WHERE " + COLUMN_ID + "='" + task.getTask_id() + "'");
 
         SQLiteDatabase db = getDB();
-        Log.i("task_config",buffer.toString());
+        Log.v(TaskConfigMainActivity.TAG, buffer.toString());
         try {
             db.execSQL(buffer.toString());
         } catch (SQLException e) {
@@ -194,10 +200,12 @@ public class TaskDetailOpenHelper extends SQLiteOpenHelper {
         buffer.append(COLUMN_YEAR + "=?");
         buffer.append(" AND " + COLUMN_MONTH + "=?");
 
-        SQLiteDatabase db = getDB();
+        buffer.append(" ORDER BY " + COLUMN_STARTTIME + " DESC");
 
+        SQLiteDatabase db = getDB();
+        Cursor cursor = null;
         try {
-            Cursor cursor = db.rawQuery(buffer.toString(),new String[]{year+"",month+""});
+            cursor = db.rawQuery(buffer.toString(),new String[]{year+"",month+""});
             while (cursor.moveToNext()){
                 SMSTaskModel task = new SMSTaskModel(cursor.getString(0),cursor.getString(1),
                         cursor.getString(2),cursor.getInt(5),cursor.getInt(6));
@@ -212,28 +220,175 @@ public class TaskDetailOpenHelper extends SQLiteOpenHelper {
                     task.setSms_received(false);
                 }
                 if (cursor.getString(7)!=null && cursor.getString(7).length()>0){
-                    try {
-                        task.setStarttime(DATE_FORMATOR.parse(cursor.getString(7)));
-                    } catch (ParseException e) {
 
-                    }
+                    task.setStarttime(DatetimeUtil.parseDate(cursor.getString(7)));
+
                 }
                 if (cursor.getString(8)!=null && cursor.getString(8).length()>0){
-                    try {
-                        task.setRecivetime(DATE_FORMATOR.parse(cursor.getString(8)));
-                    } catch (ParseException e) {
 
-                    }
+                    task.setRecivetime(DatetimeUtil.parseDate(cursor.getString(8)));
+
                 }
                 tasks.add(task);
             }
         } catch (Exception e) {
             return tasks;
         } finally {
+            if (cursor != null){
+                cursor.close();
+            }
             db.close();
         }
 
         return tasks;
+    }
+
+    /**
+     * 根据任务ID，查找发送任务
+     * @param id
+     * @return
+     * @throws Exception
+     */
+    public SMSTaskModel queryTaskByID(String id) throws Exception{
+
+        if (id == null || id.equals("")){
+            return null;
+        }
+        SQLiteDatabase db = getDB();
+
+        StringBuffer buffer = new StringBuffer();
+
+        buffer.append("SELECT ") ;
+        buffer.append(COLUMN_ID + ",");
+        buffer.append(COLUMN_CONTENT + ",");
+        buffer.append(COLUMN_DESTNUMBER + ",");
+        buffer.append(COLUMN_SENDED + ",");
+        buffer.append(COLUMN_RECEIVED + ",");
+        buffer.append(COLUMN_YEAR + ",");
+        buffer.append(COLUMN_MONTH + ",");
+        buffer.append(COLUMN_STARTTIME + ",");
+        buffer.append(COLUMN_RECEIVETIME + " ");
+        buffer.append("FROM " + TASKDETAIL_TABLE_NAME + " ");
+        buffer.append("WHERE ");
+
+        buffer.append(COLUMN_ID + "=?");
+        Cursor cursor = null;
+        try {
+            cursor = db.rawQuery(buffer.toString(),new String[]{id});
+            if (cursor.moveToNext()){
+                SMSTaskModel task = new SMSTaskModel(cursor.getString(0),cursor.getString(1),
+                        cursor.getString(2),cursor.getInt(5),cursor.getInt(6));
+                if (SMSTaskModel.VALUE_SENDED.equals(cursor.getString(3))){
+                    task.setSms_sended(true);
+                }else {
+                    task.setSms_sended(false);
+                }
+                if (SMSTaskModel.VALUE_RECEIVED.equals(cursor.getString(4))){
+                    task.setSms_received(true);
+                }else {
+                    task.setSms_received(false);
+                }
+                if (cursor.getString(7)!=null && cursor.getString(7).length()>0){
+
+                    task.setStarttime(DatetimeUtil.parseDate(cursor.getString(7)));
+
+                }
+                if (cursor.getString(8)!=null && cursor.getString(8).length()>0){
+
+                    task.setRecivetime(DatetimeUtil.parseDate(cursor.getString(8)));
+
+                }
+
+                return task;
+            }else{
+                return null;
+            }
+        } catch (Exception e) {
+            throw e;
+        } finally {
+            if (cursor != null){
+                cursor.close();
+            }
+            db.close();
+        }
+    }
+
+    /**
+     * 根据收到短信的号码，查找最早的未收到回复的发送任务
+     * @param spcode
+     * @return
+     */
+    public SMSTaskModel queryLastSentTask(String spcode) throws Exception{
+        if (spcode == null || spcode.equals("")){
+            return null;
+        }
+        SQLiteDatabase db = getDB();
+
+        StringBuffer buffer = new StringBuffer();
+
+        buffer.append("SELECT ") ;
+        buffer.append(COLUMN_ID + ",");
+        buffer.append(COLUMN_CONTENT + ",");
+        buffer.append(COLUMN_DESTNUMBER + ",");
+        buffer.append(COLUMN_SENDED + ",");
+        buffer.append(COLUMN_RECEIVED + ",");
+        buffer.append(COLUMN_YEAR + ",");
+        buffer.append(COLUMN_MONTH + ",");
+        buffer.append(COLUMN_STARTTIME + ",");
+        buffer.append(COLUMN_RECEIVETIME + " ");
+        buffer.append("FROM " + TASKDETAIL_TABLE_NAME + " ");
+        buffer.append("WHERE ");
+
+        buffer.append(COLUMN_SENDED + "=?");
+        buffer.append(" AND " + COLUMN_RECEIVED + "=?");
+        buffer.append(" AND " + COLUMN_YEAR + "=?");
+        buffer.append(" AND " + COLUMN_MONTH + "=?");
+        buffer.append(" AND " + COLUMN_DESTNUMBER + "=?");
+
+        buffer.append(" ORDER BY " + COLUMN_STARTTIME );
+
+        Log.v(TaskConfigMainActivity.TAG,buffer.toString());
+
+        Cursor cursor = null;
+        try {
+            cursor = db.rawQuery(buffer.toString(),new String[]{SMSTaskModel.VALUE_SENDED,SMSTaskModel.VALUE_NOT_RECEIVED,
+                    DatetimeUtil.getCurrentYear()+"",DatetimeUtil.getCurrentMonth()+"",spcode});
+            if (cursor.moveToNext()){
+                SMSTaskModel task = new SMSTaskModel(cursor.getString(0),cursor.getString(1),
+                        cursor.getString(2),cursor.getInt(5),cursor.getInt(6));
+                if (SMSTaskModel.VALUE_SENDED.equals(cursor.getString(3))){
+                    task.setSms_sended(true);
+                }else {
+                    task.setSms_sended(false);
+                }
+                if (SMSTaskModel.VALUE_RECEIVED.equals(cursor.getString(4))){
+                    task.setSms_received(true);
+                }else {
+                    task.setSms_received(false);
+                }
+                if (cursor.getString(7)!=null && cursor.getString(7).length()>0){
+
+                    task.setStarttime(DatetimeUtil.parseDate(cursor.getString(7)));
+
+                }
+                if (cursor.getString(8)!=null && cursor.getString(8).length()>0){
+
+                    task.setRecivetime(DatetimeUtil.parseDate(cursor.getString(8)));
+
+                }
+
+                return task;
+            }else{
+                return null;
+            }
+        } catch (Exception e) {
+            throw e;
+        } finally {
+            if (cursor != null){
+                cursor.close();
+            }
+            db.close();
+        }
     }
 
     //检查任务字段值

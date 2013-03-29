@@ -4,8 +4,8 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,12 +15,11 @@ import com.sohu.wls.app.automsg.common.DBCommonService;
 import com.sohu.wls.app.automsg.common.SMSTaskModel;
 import com.sohu.wls.app.automsg.db.TaskDetailOpenHelper;
 import com.sohu.wls.app.automsg.db.UserDetailOpenHelper;
+import com.sohu.wls.app.automsg.tasklist.TaskStatusActivity;
 import com.sohu.wls.app.automsg.util.DatetimeUtil;
 
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 /**
  * Created with IntelliJ IDEA.
@@ -30,7 +29,7 @@ import java.util.Random;
  * To change this template use File | Settings | File Templates.
  */
 public class TaskConfigMainActivity extends Activity {
-
+    public static final String TAG = "task_config";
     /** Called when the activity is first created. */
     private ListView taskDetailListView;
     private ConfigListAdapter adapter;
@@ -112,6 +111,9 @@ public class TaskConfigMainActivity extends Activity {
              }
 
             Toast.makeText(this, "保存任务成功", Toast.LENGTH_LONG).show();
+            Intent intent = new Intent();
+            intent.setClass(this, TaskStatusActivity.class);
+            startActivity(intent);
         }else{
             Toast.makeText(this, R.string.task_config_send_none_msg, Toast.LENGTH_LONG).show();
         }
@@ -219,7 +221,7 @@ public class TaskConfigMainActivity extends Activity {
             ConfigListItemHolder holder = null;
             if(view == null){
                 LayoutInflater layoutInflater = LayoutInflater.from(context);
-                view = layoutInflater.inflate(R.layout.task_config_detaillist, null);
+                view = layoutInflater.inflate(R.layout.task_config_detail_list_item, null);
 
                 holder = new ConfigListItemHolder();
                 holder.spcode = (TextView) view.findViewById(R.id.task_config_item_spcode);

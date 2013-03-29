@@ -1,41 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
-              android:layout_width="fill_parent"
-              android:layout_height="fill_parent"
-        >
-    <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="手机号"
-            android:id="@+id/textView" android:layout_gravity="left|center_vertical" android:layout_margin="10dp"
-            style="@style/task_config_value"/>
-    <EditText
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/user_detail_phone" android:layout_gravity="left|center_vertical"
-            android:inputType="number"/>
-    <TextView style="@style/task_config_value" android:layout_width="wrap_content" android:layout_height="wrap_content"
-              android:text="月消费上限" android:id="@+id/textView1" android:layout_gravity="left|center_vertical"
-              android:layout_margin="10dp"/>
-    <EditText android:layout_width="fill_parent" android:layout_height="wrap_content"
-              android:id="@+id/user_detail_cost_max" android:layout_gravity="left|center_vertical"
-              android:inputType="number" android:maxLength="3"/>
-    <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Update"
-            android:id="@+id/btn_save_user_detail" android:layout_gravity="center"
-            android:onClick="@string/trigger_user_detail_save"/>
-    <Button
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:text="querytasks"
-            android:id="@+id/btn_query_tasks" android:onClick="queryAllTasks"/>
-    <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="show task config activity"
-            android:id="@+id/button_task_config" android:layout_gravity="center"/>
-</LinearLayout>
 
+<RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" xmlns:android="http://schemas.android.com/apk/res/android"
+        android:background="@color/bg_content">
+    <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="基本信息管理"
+            android:id="@+id/nav_user_detail" android:layout_centerHorizontal="true" android:layout_alignParentTop="true"
+            android:layout_marginTop="11dp" android:onClick="onItemClick"/>
+    <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="发送任务配置"
+            android:id="@+id/nav_task_config" android:layout_centerHorizontal="true"
+            android:layout_below="@+id/nav_user_detail" android:onClick="onItemClick"/>
+    <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="发送状态管理"
+            android:id="@+id/nav_task_status" android:layout_centerHorizontal="true"
+            android:layout_below="@+id/nav_task_config" android:onClick="onItemClick"/>
+</RelativeLayout>
