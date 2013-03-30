@@ -1,5 +1,7 @@
 package com.sohu.wls.app.automsg.common;
 
+import android.os.Bundle;
+
 import java.util.Date;
 
 /**
@@ -10,7 +12,7 @@ import java.util.Date;
  * To change this template use File | Settings | File Templates.
  * 发送任务
  */
-public class SMSTaskModel {
+public class SMSTaskModel{
     /**
      * 已发送短信
      */

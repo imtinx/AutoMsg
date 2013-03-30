@@ -60,9 +60,9 @@ public class UserDetailOpenHelper extends SQLiteOpenHelper {
     public UserDetailModel queryUserDetailInfo() throws Exception{
         UserDetailModel detail = new UserDetailModel();
         SQLiteDatabase db = getDB();
-
+        Cursor cursor = null;
         try {
-            Cursor cursor = db.rawQuery("SELECT "+COLUMN_NAME+","+COLUMN_VALUE+" FROM "+USERDETAIL_TABLE_NAME,null);
+            cursor = db.rawQuery("SELECT "+COLUMN_NAME+","+COLUMN_VALUE+" FROM "+USERDETAIL_TABLE_NAME,null);
 
             while (cursor.moveToNext()){
                  if (cursor.getString(0).equals(KEY_PHONENUMBER)){
@@ -74,6 +74,9 @@ public class UserDetailOpenHelper extends SQLiteOpenHelper {
         } catch (Exception e) {
             throw e;
         } finally {
+            if (cursor != null){
+                cursor.close();
+            }
             db.close();
         }
 

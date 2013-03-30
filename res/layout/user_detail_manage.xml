@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent">
+
+    <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent" android:background="@color/bg_content">
+        <TextView style="@style/task_config_label" android:layout_width="fill_parent"
+                  android:layout_height="wrap_content" android:text="手机号" android:id="@+id/textView"
+                  android:layout_gravity="left|center_vertical" android:paddingLeft="10dp"
+                  android:paddingTop="10dp" android:paddingBottom="10dp" android:textStyle="bold"
+                  android:textSize="16dp"/>
+        <EditText android:layout_width="fill_parent" android:layout_height="wrap_content"
+                  android:id="@+id/user_detail_phone" android:layout_gravity="left|center_vertical"
+                  android:inputType="number" android:layout_marginTop="5dp" android:onClick="onInfoFieldClick"/>
+        <TextView style="@style/task_config_label" android:layout_width="fill_parent"
+                  android:layout_height="wrap_content" android:text="月消费上限" android:id="@+id/textView1"
+                  android:layout_gravity="left|center_vertical" android:textSize="16dp"
+                  android:textStyle="bold" android:paddingLeft="10dp" android:paddingTop="10dp"
+                  android:paddingBottom="10dp"/>
+        <EditText android:layout_width="fill_parent" android:layout_height="wrap_content"
+                  android:id="@+id/user_detail_cost_max" android:layout_gravity="left|center_vertical"
+                  android:inputType="number" android:maxLength="3" android:layout_marginTop="5dp"
+                  android:onClick="onInfoFieldClick"/>
+        <Button android:layout_width="fill_parent" android:layout_height="wrap_content" android:text="保存"
+                android:id="@+id/btn_save_user_detail" android:layout_alignRight="@+id/task_config_label_title"
+                android:layout_alignTop="@+id/task_config_label_title" android:width="60dp"
+                android:background="@drawable/task_config_button" android:onClick="@string/trigger_user_detail_save"
+                android:layout_gravity="left|center_vertical" android:layout_margin="10dp"/>
+    </LinearLayout>
+</LinearLayout>

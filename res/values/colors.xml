@@ -2,4 +2,4 @@
 <resources>
     <drawable name="task_config_list_item_pressed">#ffffffff</drawable>
     <drawable name="task_config_list_item">#ffcccccc</drawable>
-</resources>
+<color name="bg_content">#ccc</color><color name="text_value">#333</color></resources>
