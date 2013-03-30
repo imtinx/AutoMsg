@@ -7,6 +7,10 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import com.sohu.wls.app.automsg.R;
+import com.sohu.wls.app.automsg.common.DBCommonService;
+import com.sohu.wls.app.automsg.common.ICommonService;
+import com.sohu.wls.app.automsg.db.TaskDetailOpenHelper;
+import com.sohu.wls.app.automsg.db.UserDetailOpenHelper;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -17,6 +21,8 @@ import java.util.Map;
  *历史任务状态
  */
 public class HistoryTaskActivity extends Activity {
+
+    private ICommonService dbservice = new DBCommonService(new UserDetailOpenHelper(this), new TaskDetailOpenHelper(this));
 
     @Override
     public void onCreate(Bundle savedInstanceState){
@@ -43,6 +49,7 @@ public class HistoryTaskActivity extends Activity {
      * @return   历史任务数据
      */
     private List<Map<String, Object>> getHistoryTaskList(){
+
         List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
 
         Map<String, Object> map = new HashMap<String, Object>();
