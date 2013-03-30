@@ -2,7 +2,10 @@ package com.sohu.wls.app.automsg.tasklist;
 
 
 import android.content.Context;
+import android.os.Bundle;
+import android.os.Message;
 import android.telephony.SmsManager;
+import android.util.Log;
 import com.sohu.wls.app.automsg.common.DBCommonService;
 import com.sohu.wls.app.automsg.common.ICommonService;
 import com.sohu.wls.app.automsg.common.SMSTaskModel;
@@ -20,6 +23,8 @@ import java.util.List;
  */
 public class SendSMSRunnable implements Runnable {
 
+    private static final String ACTIVITY_TAG="SendSMSRunnable";
+
     private List<SMSTaskModel> tasklist;
     private Context context;
     private volatile boolean running = true;
@@ -32,30 +37,38 @@ public class SendSMSRunnable implements Runnable {
     public void run() {
         Iterator<SMSTaskModel> iter  =tasklist.iterator();
 
-        while(true){
-             if(running){
-                 while(iter.hasNext()){
-                     System.out.println("sending");
-                     SMSTaskModel task = iter.next();
-                     send(task);
-                     task.setSms_sended(true);
-                     ICommonService dbservice = new DBCommonService(new UserDetailOpenHelper(context), new TaskDetailOpenHelper(context));
-                     try {
-                         dbservice.updateSMSTask(task);
-                         TaskStatusActivity.taskStatusSentText++;
-                     } catch (Exception e) {
-                         //更新失败
-                         e.printStackTrace();
-                     }
-                     iter.remove();
-                     try {
-                         Thread.currentThread().sleep(5000);
-                     } catch (InterruptedException e) {
-                         e.printStackTrace();
-                     }
-                 }
-             }
+        while (true) {
+            while (iter.hasNext()) {
+                try {
+                    Thread.currentThread().sleep(5000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                if (running) {
+                    System.out.println("sending");
+                    SMSTaskModel task = iter.next();
+                    send(task);
+                    task.setSms_sended(true);
+                    ICommonService dbservice = new DBCommonService(new UserDetailOpenHelper(context), new TaskDetailOpenHelper(context));
+                    try {
+                        dbservice.updateSMSTask(task);
+                        refreshTaskStatusSentText();
+                    } catch (Exception e) {
+                        //更新失败
+                        e.printStackTrace();
+                    }
+                    iter.remove();
+                }
+            }
         }
+    }
+
+    private void refreshTaskStatusSentText(){
+        Message msg = new Message();
+        Bundle b = new Bundle();
+        b.putInt("type", TaskStatusActivity.TASK_STATUS_SENT_TAG);
+        msg.setData(b);
+        TaskStatusActivity.handler.sendMessage(msg);
     }
 
 
@@ -69,6 +82,7 @@ public class SendSMSRunnable implements Runnable {
         ArrayList<String> texts = manager.divideMessage(task.getSms_content());
         for(String text:texts){
             manager.sendTextMessage(task.getSms_destnumber(),null, text,null,null);
+            Log.i(SendSMSRunnable.ACTIVITY_TAG,"send sms:{mobile:"+task.getSms_destnumber()+",text:"+text+"}");
         }
     }
 

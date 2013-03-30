@@ -9,10 +9,7 @@ import android.util.Log;
 import com.sohu.wls.app.automsg.common.SMSTaskModel;
 import com.sohu.wls.app.automsg.taskconfig.TaskConfigMainActivity;
 import com.sohu.wls.app.automsg.util.DatetimeUtil;
-import com.sohu.wls.app.automsg.util.SMSUtil;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**

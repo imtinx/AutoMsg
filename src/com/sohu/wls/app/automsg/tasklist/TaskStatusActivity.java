@@ -2,6 +2,9 @@ package com.sohu.wls.app.automsg.tasklist;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.view.View;
 import android.widget.*;
 import com.sohu.wls.app.automsg.R;
@@ -21,15 +24,21 @@ public class TaskStatusActivity extends Activity {
 
     private volatile boolean pause = false;
 
+    public static final int TASK_STATUS_SENT_TAG = 0;
+    public static final int TASK_STATUS_REPLY_TAG = 1;
+
+
     private ICommonService dbservice = new DBCommonService(new UserDetailOpenHelper(this), new TaskDetailOpenHelper(this));
 
 
-    public static int taskStatusSentText = 0;
-    public static  int taskStatusRepliedText = 0;
+    public int taskStatusSentText = 0;
+    public int taskStatusRepliedText = 0;
 
-    private TextView taskStatusExpectTextView;
-    private TextView taskStatusSentTextView;
-    private TextView taskStatusRepliedTextView;
+    public static RefreshHandler handler;
+
+    private static TextView taskStatusExpectTextView;
+    private static TextView taskStatusSentTextView;
+    private static TextView taskStatusRepliedTextView;
 
     private SendSMSRunnable smsRunnable;
     @Override
@@ -78,28 +87,40 @@ public class TaskStatusActivity extends Activity {
         taskStatusList.setAdapter(adapter);
 
         List<SMSTaskModel> tasklist = dbservice.getCurrentMonthSMSTaskDetail();
-
-        taskStatusExpectTextView.setText(tasklist.size());
+        taskStatusExpectTextView.setText(String.valueOf(tasklist.size()));
         smsRunnable = new SendSMSRunnable(this,tasklist);
         Thread smsThread = new Thread(smsRunnable);
         smsThread.start();
-        Thread refreshThread = new RefreshTaskStatusThread();
-        refreshThread.start();
+
+        handler = new RefreshHandler();
+
     }
 
-    class  RefreshTaskStatusThread  extends  Thread{
+
+    class RefreshHandler extends Handler {
+        public RefreshHandler() {
+        }
         @Override
-        public void run() {
-            super.run();
-            taskStatusSentTextView.setText(taskStatusSentText);
-            taskStatusRepliedTextView.setText(taskStatusRepliedText);
-            try {
-                sleep(1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            Bundle b = msg.getData();
+            int type = b.getInt("type");
+            switch (type)              {
+                case TASK_STATUS_SENT_TAG  : {
+                    TaskStatusActivity.this.taskStatusSentText++;
+                    TaskStatusActivity.this.taskStatusSentTextView.setText(String.valueOf(taskStatusSentText));
+                    break;
+                }
+                case TASK_STATUS_REPLY_TAG   :    {
+                    TaskStatusActivity.this.taskStatusRepliedText++;
+                    TaskStatusActivity.this.taskStatusRepliedTextView.setText(String.valueOf(taskStatusRepliedText));
+                    break;
+                }
             }
         }
     }
+
+
 
     private List<Map<String, Object>> getTaskStatusList(){
         List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
