@@ -43,4 +43,25 @@ public interface ICommonService {
      * @param task
      */
     public void updateSMSTask(SMSTaskModel task) throws Exception;
-}
+
+    /**
+     * 根据收到短信的号码，查找最早的未收到回复的发送任务
+     * @param spcode
+     * @return
+     */
+    public SMSTaskModel queryLastSentTask(String spcode)  throws Exception;
+    /**
+     * 获得历史统计数据
+     * @return
+     * @throws Exception
+     */
+    public List<SMSHistoryModel> queryHistory() throws Exception;
+    /**
+     * 查询某月的任务总数
+     * @param year  指定年份
+     * @param month 指定月份
+     * @return
+     */
+    public int queryTasksCount(int year, int month);
+
+    }

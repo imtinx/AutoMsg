@@ -3,10 +3,16 @@ package com.sohu.wls.app.automsg.tasklist;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Message;
 import android.telephony.SmsMessage;
 import android.util.Log;
+import com.sohu.wls.app.automsg.common.DBCommonService;
+import com.sohu.wls.app.automsg.common.ICommonService;
+import com.sohu.wls.app.automsg.common.SMSTaskModel;
+import com.sohu.wls.app.automsg.db.TaskDetailOpenHelper;
+import com.sohu.wls.app.automsg.db.UserDetailOpenHelper;
 
 /**
  * User: chaocui200783
@@ -16,6 +22,20 @@ import android.util.Log;
 public class ReceiveSMSListener extends BroadcastReceiver {
     private static final String strACT = "android.provider.Telephony.SMS_RECEIVED";
     private static final String ACTIVITY_TAG="ReceiveSMSListener";
+    private ICommonService dbservice;
+    private Context context=null;
+
+
+    public ReceiveSMSListener(Context context) {
+        this.context= context;
+        this.dbservice= new DBCommonService(new UserDetailOpenHelper(context), new TaskDetailOpenHelper(context));
+    }
+
+    public void registerAction(String action){
+        IntentFilter filter=new IntentFilter();
+        filter.addAction(action);
+        context.registerReceiver(this, filter);
+    }
 
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -30,6 +50,13 @@ public class ReceiveSMSListener extends BroadcastReceiver {
                     msgs[i] = SmsMessage.createFromPdu((byte[])pdus[i]);
                     String from = msgs[i].getDisplayOriginatingAddress();
                     String content = msgs[i].getDisplayMessageBody();
+                    try {
+                        SMSTaskModel task = dbservice.queryLastSentTask(from);
+                        task.setSms_received(true);
+                        dbservice.updateSMSTask(task);
+                    } catch (Exception e) {
+                        Log.e(ACTIVITY_TAG,"update error!",e);
+                    }
                     refreshTaskStatusReplyText();
                     Log.i(ACTIVITY_TAG,"receive sms:{from:"+from+",content:"+content+"}");
                 }

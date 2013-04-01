@@ -41,23 +41,23 @@ public class SendSMSRunnable implements Runnable {
     public void run() {
         while(!stop){
             if(running){
-
                 if(iterator.hasNext()){
                     SMSTaskModel task = iterator.next();
+                    if(task.isSms_sended())
+                        continue;
                     send(task);
                     task.setSms_sended(true);
                     try {
                         dbservice.updateSMSTask(task);
                         refreshTaskStatusSentText();
                     } catch (Exception e) {
-                        //更新失败
-                        e.printStackTrace();
+                        Log.e(ACTIVITY_TAG,"update error!",e);
                     }
                     iterator.remove();
                     try {
                         Thread.currentThread().sleep(INTERVAL);
                     } catch (InterruptedException e) {
-                        e.printStackTrace();
+                        Log.e(ACTIVITY_TAG,"thread error!",e);
                     }
                 }else{
                     Log.i(ACTIVITY_TAG,"mission complete!");
@@ -121,8 +121,39 @@ public class SendSMSRunnable implements Runnable {
      * 获得当月发送数量总数
      * @return
      */
-    public int getSendTaskNum(){
+    public int getTotalTaskNum(){
         return tasklist.size();
     }
 
+    /**
+     * 获得当月已发送数量
+     * @return
+     */
+    public int getSentTaskNum() {
+        int i = 0;
+        if (tasklist.size() != 0) {
+            for (SMSTaskModel task : tasklist) {
+                if (task.isSms_sended()) {
+                    i++;
+                }
+            }
+        }
+        return i;
+    }
+
+    /**
+     * 获得当月已回复数量
+     * @return
+     */
+    public int getRepliedTaskNum() {
+        int i = 0;
+        if (tasklist.size() != 0) {
+            for (SMSTaskModel task : tasklist) {
+                if (task.isSms_received()) {
+                    i++;
+                }
+            }
+        }
+        return i;
+    }
 }

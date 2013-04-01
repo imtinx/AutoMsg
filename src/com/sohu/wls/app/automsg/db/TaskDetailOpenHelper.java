@@ -6,6 +6,7 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
+import com.sohu.wls.app.automsg.common.SMSHistoryModel;
 import com.sohu.wls.app.automsg.common.SMSTaskModel;
 import com.sohu.wls.app.automsg.taskconfig.TaskConfigMainActivity;
 import com.sohu.wls.app.automsg.util.DatetimeUtil;
@@ -416,5 +417,87 @@ public class TaskDetailOpenHelper extends SQLiteOpenHelper {
         }
 
         return db;
+    }
+
+
+    /**
+     * 获得历史统计数据
+     * @return
+     * @throws Exception
+     */
+    public List<SMSHistoryModel> queryHistory() throws Exception{
+
+        SQLiteDatabase db = getDB();
+
+        StringBuffer buffer = new StringBuffer();
+
+        buffer.append("SELECT ") ;
+        buffer.append(COLUMN_YEAR + ",");
+        buffer.append(COLUMN_MONTH + ",");
+        buffer.append("sum("+COLUMN_SENDED + ") as sentNum,");
+        buffer.append("sum("+COLUMN_RECEIVED + ") as receivedNum,");
+        buffer.append("sum("+COLUMN_SENDED+"*"+COLUMN_FEE + ") as totalFee");
+        buffer.append(" FROM " + TASKDETAIL_TABLE_NAME + " ");
+        buffer.append(" GROUP BY ");
+        buffer.append(COLUMN_YEAR + ","+COLUMN_MONTH);
+        buffer.append(" ORDER BY " + COLUMN_YEAR+"," +COLUMN_MONTH);
+
+        Log.v(TaskConfigMainActivity.TAG,buffer.toString());
+        List<SMSHistoryModel> historyModels = new ArrayList<SMSHistoryModel>();
+
+        Cursor cursor = null;
+        try {
+            cursor = db.rawQuery(buffer.toString(),new String[]{});
+            while (cursor.moveToNext()){
+                SMSHistoryModel historyModel = new SMSHistoryModel(cursor.getInt(0),cursor.getInt(1),
+                        cursor.getInt(2),cursor.getInt(3),cursor.getInt(4));
+                historyModels.add(historyModel) ;
+            }
+            return historyModels;
+        } catch (Exception e) {
+            throw e;
+        } finally {
+            if (cursor != null){
+                cursor.close();
+            }
+            db.close();
+        }
+    }
+
+
+
+    /**
+     * 查询某月的任务总数
+     * @param year  指定年份
+     * @param month 指定月份
+     * @return
+     */
+    public int queryTasksCount(int year, int month){
+
+        StringBuffer buffer = new StringBuffer();
+
+        buffer.append("SELECT count(1)") ;
+        buffer.append("FROM " + TASKDETAIL_TABLE_NAME + " ");
+        buffer.append("WHERE ");
+
+        buffer.append(COLUMN_YEAR + "=?");
+        buffer.append(" AND " + COLUMN_MONTH + "=?");
+
+        SQLiteDatabase db = getDB();
+        Cursor cursor = null;
+        try {
+            cursor = db.rawQuery(buffer.toString(),new String[]{year+"",month+""});
+            if (cursor.moveToNext()){
+                return cursor.getInt(0);
+            }
+        } catch (Exception e) {
+            return 0;
+        } finally {
+            if (cursor != null){
+                cursor.close();
+            }
+            db.close();
+        }
+        return 0;
     }
 }

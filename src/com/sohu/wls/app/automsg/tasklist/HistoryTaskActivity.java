@@ -2,6 +2,7 @@ package com.sohu.wls.app.automsg.tasklist;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -9,6 +10,7 @@ import android.widget.SimpleAdapter;
 import com.sohu.wls.app.automsg.R;
 import com.sohu.wls.app.automsg.common.DBCommonService;
 import com.sohu.wls.app.automsg.common.ICommonService;
+import com.sohu.wls.app.automsg.common.SMSHistoryModel;
 import com.sohu.wls.app.automsg.db.TaskDetailOpenHelper;
 import com.sohu.wls.app.automsg.db.UserDetailOpenHelper;
 
@@ -23,6 +25,7 @@ import java.util.Map;
 public class HistoryTaskActivity extends Activity {
 
     private ICommonService dbservice = new DBCommonService(new UserDetailOpenHelper(this), new TaskDetailOpenHelper(this));
+    private static final String ACTIVITY_TAG="HistoryTaskActivity";
 
     @Override
     public void onCreate(Bundle savedInstanceState){
@@ -49,22 +52,31 @@ public class HistoryTaskActivity extends Activity {
      * @return   历史任务数据
      */
     private List<Map<String, Object>> getHistoryTaskList(){
-
+        List<SMSHistoryModel> historyModels;
         List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
+        try {
+            historyModels = dbservice.queryHistory();
+            if(historyModels!=null&&historyModels.size()!=0) {
+                for(SMSHistoryModel historyModel : historyModels){
+                    int count = dbservice.queryTasksCount(historyModel.getYear(),historyModel.getMonth());
+                    Map<String, Object> map = new HashMap<String, Object>();
+                    map.put("task_month", historyModel.getYear()+"-"+historyModel.getMonth());
 
-        Map<String, Object> map = new HashMap<String, Object>();
-        map.put("task_month", "2013-11");
+                    String taskExpenses = getResources().getString(R.string.task_expenses);
+                    taskExpenses = String.format(taskExpenses,historyModel.getFee());
+                    map.put("task_expenses",taskExpenses);
 
-        String taskExpenses = getResources().getString(R.string.task_expenses);
-        taskExpenses = String.format(taskExpenses,200);
-        map.put("task_expenses",taskExpenses);
+                    String taskResult = getResources().getString(R.string.task_result);
+                    taskResult = String.format(taskResult, count, historyModel.getSentNum(), historyModel.getRepliedNum());
+                    map.put("task_result", taskResult);
 
-        String taskResult = getResources().getString(R.string.task_result);
-        taskResult = String.format(taskResult, 110, 110, 110);
-        map.put("task_result", taskResult);
+                    list.add(map);
+                }
+            }
 
-        list.add(map);
-
+        } catch (Exception e) {
+            Log.e(ACTIVITY_TAG,"Get history error!",e);
+        }
         return list;
     }
 }

@@ -56,4 +56,20 @@ public class DBCommonService implements ICommonService {
         taskDetailOpenHelper.updateTask(task);
     }
 
+    @Override
+    public SMSTaskModel queryLastSentTask(String spcode) throws Exception {
+        return taskDetailOpenHelper.queryLastSentTask(spcode);
+    }
+
+    @Override
+    public List<SMSHistoryModel> queryHistory() throws Exception {
+        return taskDetailOpenHelper.queryHistory();
+    }
+
+    @Override
+    public int queryTasksCount(int year, int month) {
+        return taskDetailOpenHelper.queryTasksCount(year,month);
+    }
+
+
 }

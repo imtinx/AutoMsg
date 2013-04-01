@@ -1,13 +1,15 @@
 package com.sohu.wls.app.automsg.tasklist;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.view.View;
 import android.widget.*;
+import com.sohu.wls.app.automsg.MyActivity;
 import com.sohu.wls.app.automsg.R;
-
+import com.sohu.wls.app.automsg.taskconfig.TaskConfigMainActivity;
 
 
 public class TaskStatusActivity extends Activity {
@@ -26,6 +28,7 @@ public class TaskStatusActivity extends Activity {
     private static TextView taskStatusRepliedTextView;
     private static ProgressBar progressBar;
     private SendSMSRunnable smsRunnable;
+    private ReceiveSMSListener   receiveSMSListener;
     @Override
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
@@ -55,24 +58,44 @@ public class TaskStatusActivity extends Activity {
 
         //初始化发送线程
         smsRunnable = new SendSMSRunnable(this);
-        taskStatusExpectText= smsRunnable.getSendTaskNum();
-        taskStatusExpectTextView.setText(String.valueOf(taskStatusExpectText));
+
+        taskStatusExpectText= smsRunnable.getTotalTaskNum();
+        taskStatusSentText= smsRunnable.getSentTaskNum();
+        taskStatusRepliedText = smsRunnable.getRepliedTaskNum();
+        refreshTaskStatus();
+
         Thread smsThread = new Thread(smsRunnable);
         smsThread.start();
         //初始化状态刷新回调
         handler = new RefreshHandler();
-
+        //初始化进度条
         progressBar = (ProgressBar) findViewById(R.id.send_progress);
         progressBar.setMax(taskStatusExpectText);
-        progressBar.setProgress(0);
+        progressBar.setProgress(taskStatusSentText);
+
+        receiveSMSListener = new ReceiveSMSListener(this);
     }
 
     @Override
     public void onBackPressed() {
         super.onBackPressed();
         smsRunnable.stopSend();
+        Intent intent = new Intent();
+        intent.setClass(this, MyActivity.class);
+        startActivity(intent);
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        receiveSMSListener.registerAction("receive.sms.action");
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        unregisterReceiver(receiveSMSListener);
+    }
 
     class RefreshHandler extends Handler {
         public RefreshHandler() {
@@ -99,6 +122,7 @@ public class TaskStatusActivity extends Activity {
     }
 
     private void refreshTaskStatus(){
+        TaskStatusActivity.this.taskStatusExpectTextView.setText(String.valueOf(taskStatusExpectText));
         TaskStatusActivity.this.taskStatusSentTextView.setText(String.valueOf(taskStatusSentText));
         TaskStatusActivity.this.taskStatusRepliedTextView.setText(String.valueOf(taskStatusRepliedText));
     }
