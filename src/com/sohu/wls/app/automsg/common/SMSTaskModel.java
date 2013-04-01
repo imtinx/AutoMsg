@@ -32,6 +32,7 @@ public class SMSTaskModel{
     private String task_id;
     private String sms_content;
     private String sms_destnumber;
+    private int sms_fee;
     private boolean sms_sended;
     private boolean sms_received;
     private int year;
@@ -39,10 +40,11 @@ public class SMSTaskModel{
     private Date starttime;
     private Date recivetime;
 
-    public SMSTaskModel(String task_id, String sms_content, String sms_destnumber, int year, int month) {
+    public SMSTaskModel(String task_id, String sms_content, String sms_destnumber,int sms_fee, int year, int month) {
         this.task_id = task_id;
         this.sms_content = sms_content;
         this.sms_destnumber = sms_destnumber;
+        this.sms_fee = sms_fee;
         this.year = year;
         this.month = month;
     }
@@ -70,6 +72,14 @@ public class SMSTaskModel{
      */
     public String getSms_destnumber() {
         return sms_destnumber;
+    }
+
+    /**
+     * 单条费用
+     * @return
+     */
+    public int getSms_fee() {
+        return sms_fee;
     }
 
     /**
@@ -158,6 +168,7 @@ public class SMSTaskModel{
                 "task_id='" + task_id + '\'' +
                 ", sms_content='" + sms_content + '\'' +
                 ", sms_destnumber='" + sms_destnumber + '\'' +
+                ", sms_fee='" + sms_fee + '\'' +
                 ", sms_sended=" + sms_sended +
                 ", sms_received=" + sms_received +
                 ", year=" + year +

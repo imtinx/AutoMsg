@@ -28,6 +28,7 @@ public class TaskDetailOpenHelper extends SQLiteOpenHelper {
     private static final String COLUMN_DESTNUMBER = "destnumber";
     private static final String COLUMN_SENDED = "sended";
     private static final String COLUMN_RECEIVED = "received";
+    private static final String COLUMN_FEE = "fee";
     private static final String COLUMN_YEAR = "year";
     private static final String COLUMN_MONTH = "month";
     private static final String COLUMN_STARTTIME = "starttime";
@@ -36,6 +37,7 @@ public class TaskDetailOpenHelper extends SQLiteOpenHelper {
             COLUMN_ID + " TEXT, " +
             COLUMN_CONTENT + " TEXT," +
             COLUMN_DESTNUMBER + " TEXT," +
+            COLUMN_FEE + " TEXT," +
             COLUMN_SENDED + " TEXT," +
             COLUMN_RECEIVED + " TEXT," +
             COLUMN_YEAR + " TEXT," +
@@ -91,6 +93,7 @@ public class TaskDetailOpenHelper extends SQLiteOpenHelper {
             db.execSQL("INSERT INTO " + TASKDETAIL_TABLE_NAME + "(" + COLUMN_ID + "" +
                     ","+COLUMN_CONTENT+
                     ","+COLUMN_DESTNUMBER+
+                    ","+COLUMN_FEE+
                     ","+COLUMN_YEAR+
                     ","+COLUMN_MONTH+
                     ","+COLUMN_SENDED+
@@ -98,6 +101,7 @@ public class TaskDetailOpenHelper extends SQLiteOpenHelper {
                     "'" +task.getTask_id()+
                     "','"+task.getSms_content()+
                     "','"+task.getSms_destnumber()+
+                    "','"+task.getSms_fee()+
                     "','"+year+
                     "','"+month+
                     "','"+SMSTaskModel.VALUE_NOT_SENDED+
@@ -185,6 +189,7 @@ public class TaskDetailOpenHelper extends SQLiteOpenHelper {
         buffer.append(COLUMN_ID + ",");
         buffer.append(COLUMN_CONTENT + ",");
         buffer.append(COLUMN_DESTNUMBER + ",");
+        buffer.append(COLUMN_FEE + ",");
         buffer.append(COLUMN_SENDED + ",");
         buffer.append(COLUMN_RECEIVED + ",");
         buffer.append(COLUMN_YEAR + ",");
@@ -205,25 +210,25 @@ public class TaskDetailOpenHelper extends SQLiteOpenHelper {
             cursor = db.rawQuery(buffer.toString(),new String[]{year+"",month+""});
             while (cursor.moveToNext()){
                 SMSTaskModel task = new SMSTaskModel(cursor.getString(0),cursor.getString(1),
-                        cursor.getString(2),cursor.getInt(5),cursor.getInt(6));
-                if (SMSTaskModel.VALUE_SENDED.equals(cursor.getString(3))){
+                        cursor.getString(2),cursor.getInt(3),cursor.getInt(6),cursor.getInt(7));
+                if (SMSTaskModel.VALUE_SENDED.equals(cursor.getString(4))){
                     task.setSms_sended(true);
                 }else {
                     task.setSms_sended(false);
                 }
-                if (SMSTaskModel.VALUE_RECEIVED.equals(cursor.getString(4))){
+                if (SMSTaskModel.VALUE_RECEIVED.equals(cursor.getString(5))){
                     task.setSms_received(true);
                 }else {
                     task.setSms_received(false);
                 }
-                if (cursor.getString(7)!=null && cursor.getString(7).length()>0){
-
-                    task.setStarttime(DatetimeUtil.parseDate(cursor.getString(7)));
-
-                }
                 if (cursor.getString(8)!=null && cursor.getString(8).length()>0){
 
-                    task.setRecivetime(DatetimeUtil.parseDate(cursor.getString(8)));
+                    task.setStarttime(DatetimeUtil.parseDate(cursor.getString(8)));
+
+                }
+                if (cursor.getString(9)!=null && cursor.getString(9).length()>0){
+
+                    task.setRecivetime(DatetimeUtil.parseDate(cursor.getString(9)));
 
                 }
                 tasks.add(task);
@@ -259,6 +264,7 @@ public class TaskDetailOpenHelper extends SQLiteOpenHelper {
         buffer.append(COLUMN_ID + ",");
         buffer.append(COLUMN_CONTENT + ",");
         buffer.append(COLUMN_DESTNUMBER + ",");
+        buffer.append(COLUMN_FEE + ",");
         buffer.append(COLUMN_SENDED + ",");
         buffer.append(COLUMN_RECEIVED + ",");
         buffer.append(COLUMN_YEAR + ",");
@@ -274,25 +280,25 @@ public class TaskDetailOpenHelper extends SQLiteOpenHelper {
             cursor = db.rawQuery(buffer.toString(),new String[]{id});
             if (cursor.moveToNext()){
                 SMSTaskModel task = new SMSTaskModel(cursor.getString(0),cursor.getString(1),
-                        cursor.getString(2),cursor.getInt(5),cursor.getInt(6));
-                if (SMSTaskModel.VALUE_SENDED.equals(cursor.getString(3))){
+                        cursor.getString(2),cursor.getInt(3),cursor.getInt(6),cursor.getInt(7));
+                if (SMSTaskModel.VALUE_SENDED.equals(cursor.getString(4))){
                     task.setSms_sended(true);
                 }else {
                     task.setSms_sended(false);
                 }
-                if (SMSTaskModel.VALUE_RECEIVED.equals(cursor.getString(4))){
+                if (SMSTaskModel.VALUE_RECEIVED.equals(cursor.getString(5))){
                     task.setSms_received(true);
                 }else {
                     task.setSms_received(false);
                 }
-                if (cursor.getString(7)!=null && cursor.getString(7).length()>0){
-
-                    task.setStarttime(DatetimeUtil.parseDate(cursor.getString(7)));
-
-                }
                 if (cursor.getString(8)!=null && cursor.getString(8).length()>0){
 
-                    task.setRecivetime(DatetimeUtil.parseDate(cursor.getString(8)));
+                    task.setStarttime(DatetimeUtil.parseDate(cursor.getString(8)));
+
+                }
+                if (cursor.getString(9)!=null && cursor.getString(9).length()>0){
+
+                    task.setRecivetime(DatetimeUtil.parseDate(cursor.getString(9)));
 
                 }
 
@@ -327,6 +333,7 @@ public class TaskDetailOpenHelper extends SQLiteOpenHelper {
         buffer.append(COLUMN_ID + ",");
         buffer.append(COLUMN_CONTENT + ",");
         buffer.append(COLUMN_DESTNUMBER + ",");
+        buffer.append(COLUMN_FEE + ",");
         buffer.append(COLUMN_SENDED + ",");
         buffer.append(COLUMN_RECEIVED + ",");
         buffer.append(COLUMN_YEAR + ",");
@@ -352,25 +359,25 @@ public class TaskDetailOpenHelper extends SQLiteOpenHelper {
                     DatetimeUtil.getCurrentYear()+"",DatetimeUtil.getCurrentMonth()+"",spcode});
             if (cursor.moveToNext()){
                 SMSTaskModel task = new SMSTaskModel(cursor.getString(0),cursor.getString(1),
-                        cursor.getString(2),cursor.getInt(5),cursor.getInt(6));
-                if (SMSTaskModel.VALUE_SENDED.equals(cursor.getString(3))){
+                        cursor.getString(2),cursor.getInt(3),cursor.getInt(6),cursor.getInt(7));
+                if (SMSTaskModel.VALUE_SENDED.equals(cursor.getString(4))){
                     task.setSms_sended(true);
                 }else {
                     task.setSms_sended(false);
                 }
-                if (SMSTaskModel.VALUE_RECEIVED.equals(cursor.getString(4))){
+                if (SMSTaskModel.VALUE_RECEIVED.equals(cursor.getString(5))){
                     task.setSms_received(true);
                 }else {
                     task.setSms_received(false);
                 }
-                if (cursor.getString(7)!=null && cursor.getString(7).length()>0){
-
-                    task.setStarttime(DatetimeUtil.parseDate(cursor.getString(7)));
-
-                }
                 if (cursor.getString(8)!=null && cursor.getString(8).length()>0){
 
-                    task.setRecivetime(DatetimeUtil.parseDate(cursor.getString(8)));
+                    task.setStarttime(DatetimeUtil.parseDate(cursor.getString(8)));
+
+                }
+                if (cursor.getString(9)!=null && cursor.getString(9).length()>0){
+
+                    task.setRecivetime(DatetimeUtil.parseDate(cursor.getString(9)));
 
                 }
 
