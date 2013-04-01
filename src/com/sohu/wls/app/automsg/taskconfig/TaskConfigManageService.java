@@ -1,6 +1,8 @@
 package com.sohu.wls.app.automsg.taskconfig;
 
+import android.app.Activity;
 import android.util.Log;
+import android.widget.Toast;
 import com.sohu.wls.app.automsg.common.ICommonService;
 import com.sohu.wls.app.automsg.common.UserDetailModel;
 
@@ -20,7 +22,8 @@ public class TaskConfigManageService {
     private static Map<String,TaskConfigItem> tasks ;
     private static List<TaskConfigItem> taskList;
     private ICommonService commonService;
-    public TaskConfigManageService(ICommonService commonService) {
+    private Activity activity;
+    public TaskConfigManageService(ICommonService commonService, Activity activity) {
         if (tasks == null){
             tasks = new HashMap<String, TaskConfigItem>();
         }
@@ -28,6 +31,7 @@ public class TaskConfigManageService {
             taskList = new ArrayList<TaskConfigItem>();
         }
         this.commonService = commonService;
+        this.activity = activity;
     }
 
     /**
@@ -70,6 +74,10 @@ public class TaskConfigManageService {
         taskList.clear();
         UserDetailModel detailModel = commonService.getUserDetail();
         if (detailModel == null){
+            return taskList;
+        }
+        if (detailModel.getCost_max() == 0){
+            Toast.makeText(activity,"目前消费限额设置为0",Toast.LENGTH_LONG);
             return taskList;
         }
         int cost_max = commonService.getUserDetail().getCost_max();

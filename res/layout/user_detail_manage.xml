@@ -16,15 +16,16 @@
                   android:textSize="16dp"/>
         <EditText android:layout_width="fill_parent" android:layout_height="wrap_content"
                   android:id="@+id/user_detail_phone" android:layout_gravity="left|center_vertical"
-                  android:inputType="number" android:layout_marginTop="5dp" android:onClick="onInfoFieldClick"/>
+                  android:inputType="number" android:onClick="onInfoFieldClick"
+                />
         <TextView style="@style/task_config_label" android:layout_width="fill_parent"
-                  android:layout_height="wrap_content" android:text="月消费上限" android:id="@+id/textView1"
+                  android:layout_height="wrap_content" android:text="月消费上限(元)" android:id="@+id/textView1"
                   android:layout_gravity="left|center_vertical" android:textSize="16dp"
                   android:textStyle="bold" android:paddingLeft="10dp" android:paddingTop="10dp"
-                  android:paddingBottom="10dp"/>
+                  android:paddingBottom="10dp" android:layout_marginTop="0dp"/>
         <EditText android:layout_width="fill_parent" android:layout_height="wrap_content"
                   android:id="@+id/user_detail_cost_max" android:layout_gravity="left|center_vertical"
-                  android:inputType="number" android:maxLength="3" android:layout_marginTop="5dp"
+                  android:inputType="number" android:maxLength="3"
                   android:onClick="onInfoFieldClick"/>
         <Button android:layout_width="fill_parent" android:layout_height="wrap_content" android:text="保存"
                 android:id="@+id/btn_save_user_detail" android:layout_alignRight="@+id/task_config_label_title"

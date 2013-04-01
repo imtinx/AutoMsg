@@ -43,7 +43,7 @@ public class TaskConfigMainActivity extends Activity {
 
         taskDetailListView = (ListView)findViewById(R.id.task_config_main_detaillistview);
 
-        taskConfigManageService = new TaskConfigManageService(new DBCommonService(new UserDetailOpenHelper(this), new TaskDetailOpenHelper(this)));
+        taskConfigManageService = new TaskConfigManageService(new DBCommonService(new UserDetailOpenHelper(this), new TaskDetailOpenHelper(this)),this);
         List<TaskConfigItem> configs = taskConfigManageService.initTasks();
         adapter = new ConfigListAdapter(this,configs);
         taskDetailListView.setAdapter(adapter);
@@ -101,7 +101,7 @@ public class TaskConfigMainActivity extends Activity {
             int month = DatetimeUtil.getCurrentMonth();
              for (TaskConfigItem item : adapter.getConfigs()){
                  for (String id : item.getIds()){
-                     SMSTaskModel task = new SMSTaskModel(id,item.getContent(),item.getSpcode(),year,month);
+                     SMSTaskModel task = new SMSTaskModel(id,item.getContent(),item.getSpcode(),item.getFee(),year,month);
                      try {
                          taskConfigManageService.getCommonService().addSMSTask(task);
                      } catch (Exception e) {
