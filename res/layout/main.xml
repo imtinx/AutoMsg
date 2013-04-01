@@ -5,21 +5,23 @@
         android:layout_height="fill_parent" xmlns:android="http://schemas.android.com/apk/res/android"
         android:background="@color/bg_content">
     <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="基本信息管理"
-            android:id="@+id/nav_user_detail" android:layout_centerHorizontal="true" android:layout_alignParentTop="true"
-            android:layout_marginTop="11dp" android:onClick="onItemClick"/>
-    <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="发送任务配置"
-            android:id="@+id/nav_task_config" android:layout_centerHorizontal="true"
-            android:layout_below="@+id/nav_user_detail" android:onClick="onItemClick"/>
-    <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="发送状态管理"
-            android:id="@+id/nav_task_status" android:layout_centerHorizontal="true"
-            android:layout_below="@+id/nav_task_config" android:onClick="onItemClick"/>
+            android:layout_width="260dp"
+            android:layout_height="60dp"
+            android:text="发送向导"
+            android:id="@+id/button_guide"
+            android:onClick="onItemClick" android:background="@drawable/main_button"
+            android:layout_alignParentLeft="true" android:layout_marginLeft="30dp" android:layout_alignParentTop="true"
+            android:layout_marginTop="40dp" android:textColor="#ffffff" android:textStyle="bold"
+            android:textSize="25dp"/>
+    <Button android:layout_width="260dp" android:layout_height="60dp" android:text="发送历史"
+            android:id="@+id/button_history" android:onClick="onItemClick" android:background="@drawable/main_button"
+            android:textColor="#ffffff" android:textStyle="bold"
+            android:textSize="25dp"
+            android:layout_alignLeft="@+id/button_guide" android:layout_below="@+id/button_guide"   android:layout_centerVertical="true"
+            android:layout_marginTop="40dp"/>
+    <Button android:layout_width="260dp" android:layout_height="60dp" android:text="修改配置" android:id="@+id/button_config"
+            android:onClick="onItemClick" android:background="@drawable/main_button" android:textColor="#ffffff"
+            android:textStyle="bold" android:textSize="25dp"
+            android:layout_alignLeft="@+id/button_history" android:layout_alignParentTop="false"
+            android:layout_marginTop="40dp" android:layout_below="@+id/button_history"/>
 </RelativeLayout>

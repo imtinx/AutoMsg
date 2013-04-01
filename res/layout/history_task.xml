@@ -1,26 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent" style="@style/task_config_label">
-
+<RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" xmlns:android="http://schemas.android.com/apk/res/android"
+        >
     <TextView
-            android:layout_width="fill_parent"
-            android:layout_height="50dp"
+            android:layout_width="wrap_content"
+            android:layout_height="45dp"
+            android:id="@+id/history_task_label_title" android:layout_alignParentLeft="true" android:layout_alignParentTop="true"
+            android:height="30dp" android:layout_alignParentRight="true" style="@style/task_config_label"
+            android:textSize="20dp" android:textStyle="bold" android:paddingLeft="5dp" android:paddingTop="3dp"/>
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:text="@string/history_task_title"
-            android:id="@+id/history_task_title" android:layout_gravity="left|center_vertical" android:textSize="25dp"
-            android:textColor="#333" style="@style/task_config_label" android:layout_marginLeft="5dp"
-            android:gravity="center_vertical" android:textStyle="bold"/>
-
-    <View
-            android:layout_width="fill_parent"
-            android:layout_height="1px"
-            android:background="?android:attr/listDivider"
-            />
-
+            android:id="@+id/history_task_title" android:layout_alignLeft="@+id/history_task_label_title"
+            android:layout_alignParentTop="true" android:layout_marginTop="8dp" android:layout_marginLeft="5dp"
+            android:textColor="#000" android:textSize="25dp" android:textStyle="bold"/>
     <ListView
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:id="@+id/history_task_list" android:layout_gravity="center" style="@style/task_config_label"/>
-</LinearLayout>
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/history_task_list" android:layout_alignLeft="@+id/history_task_label_title"
+            android:layout_below="@+id/history_task_label_title" android:layout_alignParentBottom="true" android:background="@color/bg_content"/>
+</RelativeLayout>

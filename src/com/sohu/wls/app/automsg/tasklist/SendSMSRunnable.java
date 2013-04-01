@@ -26,30 +26,26 @@ public class SendSMSRunnable implements Runnable {
     private static final String ACTIVITY_TAG="SendSMSRunnable";
 
     private List<SMSTaskModel> tasklist;
-    private Context context;
-    private volatile boolean running = true;
-    public SendSMSRunnable(Context context,List<SMSTaskModel> tasklist) {
-        this.context = context;
-        this.tasklist = tasklist;
+    public volatile boolean running = false;
+    private volatile boolean stop = false;
+    private Iterator<SMSTaskModel> iterator;
+    private ICommonService dbservice;
+    private static final int INTERVAL = 5000; //发送频率
+    public SendSMSRunnable(Context context) {
+        this.dbservice= new DBCommonService(new UserDetailOpenHelper(context), new TaskDetailOpenHelper(context));
+        this.tasklist = dbservice.getCurrentMonthSMSTaskDetail();
+        this.iterator = tasklist.iterator();
     }
 
     @Override
     public void run() {
-        Iterator<SMSTaskModel> iter  =tasklist.iterator();
+        while(!stop){
+            if(running){
 
-        while (true) {
-            while (iter.hasNext()) {
-                try {
-                    Thread.currentThread().sleep(5000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-                if (running) {
-                    System.out.println("sending");
-                    SMSTaskModel task = iter.next();
+                if(iterator.hasNext()){
+                    SMSTaskModel task = iterator.next();
                     send(task);
                     task.setSms_sended(true);
-                    ICommonService dbservice = new DBCommonService(new UserDetailOpenHelper(context), new TaskDetailOpenHelper(context));
                     try {
                         dbservice.updateSMSTask(task);
                         refreshTaskStatusSentText();
@@ -57,12 +53,22 @@ public class SendSMSRunnable implements Runnable {
                         //更新失败
                         e.printStackTrace();
                     }
-                    iter.remove();
+                    iterator.remove();
+                    try {
+                        Thread.currentThread().sleep(INTERVAL);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }else{
+                    Log.i(ACTIVITY_TAG,"mission complete!");
                 }
             }
         }
     }
 
+    /**
+     * 刷新状态栏计数器
+     */
     private void refreshTaskStatusSentText(){
         Message msg = new Message();
         Bundle b = new Bundle();
@@ -86,15 +92,37 @@ public class SendSMSRunnable implements Runnable {
         }
     }
 
-    public void setTasklist(List<SMSTaskModel> tasklist) {
-        this.tasklist = tasklist;
-    }
+    /**
+     * 停止发送，不可继续
+     */
+    public void stopSend(){
+        this.stop = true;
+        Log.i(SendSMSRunnable.ACTIVITY_TAG,"stop sms thread!");
 
+    }
+    /**
+     * 暂停发送，可以继续
+     */
     public void pauseSend() {
         this.running = false;
+        Log.i(SendSMSRunnable.ACTIVITY_TAG,"pause sms thread!");
+
     }
 
+    /**
+     * 继续发送
+     */
     public void continueSend() {
         this.running = true;
+        Log.i(SendSMSRunnable.ACTIVITY_TAG,"continue sms thread!");
     }
+
+    /**
+     * 获得当月发送数量总数
+     * @return
+     */
+    public int getSendTaskNum(){
+        return tasklist.size();
+    }
+
 }
