@@ -28,7 +28,7 @@ public class ReceiveSMSListener extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        this.dbservice= new DBCommonService(new UserDetailOpenHelper(context), new TaskDetailOpenHelper(context));
+        this.dbservice= new DBCommonService(context);
         if (intent.getAction().equals(strACT)) {
             Bundle bundle = intent.getExtras();
             if (bundle != null) {

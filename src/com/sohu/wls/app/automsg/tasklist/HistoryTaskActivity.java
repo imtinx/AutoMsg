@@ -24,7 +24,7 @@ import java.util.Map;
  */
 public class HistoryTaskActivity extends Activity {
 
-    private ICommonService dbservice = new DBCommonService(new UserDetailOpenHelper(this), new TaskDetailOpenHelper(this));
+    private ICommonService dbservice = new DBCommonService(this);
     private static final String ACTIVITY_TAG="HistoryTaskActivity";
 
     @Override

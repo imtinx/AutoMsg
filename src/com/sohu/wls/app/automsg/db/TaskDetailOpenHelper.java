@@ -84,7 +84,8 @@ public class TaskDetailOpenHelper extends SQLiteOpenHelper {
 
             if (cursor.moveToNext() && cursor.getInt(0) > 0){
 
-                throw new RuntimeException("task id is exist");
+                Log.i(TaskConfigMainActivity.TAG,"task id is exist");
+                return;
             }
 
             String year = DatetimeUtil.getCurrentYear()+"";

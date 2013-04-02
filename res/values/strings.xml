@@ -30,5 +30,6 @@
 
     <string name="user_detail_phone_holder">请输入手机号</string>
     <string name="user_detail_cost_max_holder">请输入消费上限</string>
+    <string name="task_config_saved">配置已存在，不可修改</string>
 
 </resources>

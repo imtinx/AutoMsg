@@ -1,5 +1,6 @@
 package com.sohu.wls.app.automsg.common;
 
+import android.content.Context;
 import com.sohu.wls.app.automsg.db.TaskDetailOpenHelper;
 import com.sohu.wls.app.automsg.db.UserDetailOpenHelper;
 import com.sohu.wls.app.automsg.taskconfig.TaskConfigItem;
@@ -22,9 +23,9 @@ public class DBCommonService implements ICommonService {
     private UserDetailOpenHelper userDetailOpenHelper;
     private TaskDetailOpenHelper taskDetailOpenHelper;
 
-    public DBCommonService(UserDetailOpenHelper userDetailOpenHelper, TaskDetailOpenHelper taskDetailOpenHelper) {
-        this.userDetailOpenHelper = userDetailOpenHelper;
-        this.taskDetailOpenHelper = taskDetailOpenHelper;
+    public DBCommonService(Context context) {
+        this.userDetailOpenHelper = new UserDetailOpenHelper(context);
+        this.taskDetailOpenHelper = new TaskDetailOpenHelper(context);
     }
 
     @Override
