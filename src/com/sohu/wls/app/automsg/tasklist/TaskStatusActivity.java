@@ -72,8 +72,6 @@ public class TaskStatusActivity extends Activity {
         progressBar = (ProgressBar) findViewById(R.id.send_progress);
         progressBar.setMax(taskStatusExpectText);
         progressBar.setProgress(taskStatusSentText);
-
-        receiveSMSListener = new ReceiveSMSListener(this);
     }
 
     @Override
@@ -83,18 +81,6 @@ public class TaskStatusActivity extends Activity {
         Intent intent = new Intent();
         intent.setClass(this, MyActivity.class);
         startActivity(intent);
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        receiveSMSListener.registerAction("receive.sms.action");
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        unregisterReceiver(receiveSMSListener);
     }
 
     class RefreshHandler extends Handler {
