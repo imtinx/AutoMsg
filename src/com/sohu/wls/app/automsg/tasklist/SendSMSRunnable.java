@@ -32,7 +32,7 @@ public class SendSMSRunnable implements Runnable {
     private ICommonService dbservice;
     private static final int INTERVAL = 5000; //发送频率
     public SendSMSRunnable(Context context) {
-        this.dbservice= new DBCommonService(new UserDetailOpenHelper(context), new TaskDetailOpenHelper(context));
+        this.dbservice= new DBCommonService(context);
         this.tasklist = dbservice.getCurrentMonthSMSTaskDetail();
         this.iterator = tasklist.iterator();
     }
