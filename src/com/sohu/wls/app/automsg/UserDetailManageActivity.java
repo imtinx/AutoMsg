@@ -1,6 +1,7 @@
 package com.sohu.wls.app.automsg;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -94,6 +95,9 @@ public class UserDetailManageActivity extends Activity {
         try {
             userDetailOpenHelper.updateUserDetail(detailModel);
             Toast.makeText(this, R.string.user_detail_save_success_msg, Toast.LENGTH_LONG).show();
+            Intent intent = new Intent();
+            intent.setClass(this,MyActivity.class);
+            startActivity(intent);
         } catch (Exception e) {
             Toast.makeText(this, R.string.user_detail_save_fail_msg+"["+e.getMessage()+"]", Toast.LENGTH_LONG).show();
         }

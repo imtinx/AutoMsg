@@ -41,23 +41,6 @@ public class TaskStatusActivity extends Activity {
         taskStatusExpectTextView = (TextView)findViewById(R.id.task_status_expect_text) ;
         taskStatusSentTextView = (TextView)findViewById(R.id.task_status_sent_text) ;
         taskStatusRepliedTextView = (TextView)findViewById(R.id.task_status_replied_text) ;
-        //初始化继续/暂停按钮
-        sendController = (Button) findViewById(R.id.send_controller);
-        sendController.setText(R.string.task_start);
-
-        sendController.setOnClickListener(new Button.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Button sendController = (Button) findViewById(R.id.send_controller);
-                if(smsRunnable.running){
-                    sendController.setText(R.string.task_continue);
-                    smsRunnable.pauseSend();
-                } else{
-                    sendController.setText(R.string.task_pause);
-                    smsRunnable.continueSend();
-                }
-            }
-        });
 
         //初始化发送线程
         smsRunnable = new SendSMSRunnable(this);
@@ -69,6 +52,36 @@ public class TaskStatusActivity extends Activity {
 
         Thread smsThread = new Thread(smsRunnable);
         smsThread.start();
+
+
+        //初始化继续/暂停按钮
+        sendController = (Button) findViewById(R.id.send_controller);
+        if(taskStatusExpectText==taskStatusSentText) {
+            sendController.setText(R.string.task_finish);
+            smsRunnable.stopSend();
+            Toast.makeText(TaskStatusActivity.this, R.string.task_finish_text, Toast.LENGTH_LONG).show();
+        } else{
+            sendController.setText(R.string.task_start);
+        }
+        sendController.setOnClickListener(new Button.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Button sendController = (Button) findViewById(R.id.send_controller);
+                if(smsRunnable.stop){
+                    Intent intent = new Intent();
+                    intent.setClass(TaskStatusActivity.this, MyActivity.class);
+                    startActivity(intent);
+                }else{
+                    if(smsRunnable.running){
+                        sendController.setText(R.string.task_continue);
+                        smsRunnable.pauseSend();
+                    } else{
+                        sendController.setText(R.string.task_pause);
+                        smsRunnable.continueSend();
+                    }
+                }
+            }
+        });
         //初始化状态刷新回调
         handler = new RefreshHandler();
         //初始化进度条
@@ -108,7 +121,7 @@ public class TaskStatusActivity extends Activity {
                 }
                 case TASK_STATUS_FINISH_TAG   :    {
                     sendController.setText(R.string.task_finish);
-                    sendController.setEnabled(false);
+                    Toast.makeText(TaskStatusActivity.this, R.string.task_finish_text, Toast.LENGTH_LONG).show();
                     break;
                 }
 

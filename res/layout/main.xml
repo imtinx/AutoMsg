@@ -15,7 +15,7 @@
             android:textColor="#ffffff" android:textStyle="bold" android:textSize="25dp"
             android:layout_alignLeft="@+id/button_guide" android:layout_below="@+id/button_guide"
             android:layout_centerVertical="true" android:layout_marginTop="40dp" android:layout_gravity="center"/>
-    <Button android:layout_width="260dp" android:layout_height="60dp" android:text="修改配置"
+    <Button android:layout_width="260dp" android:layout_height="60dp" android:text="修改限额"
             android:id="@+id/button_config" android:onClick="onItemClick" android:background="@drawable/main_button"
             android:textColor="#ffffff" android:textStyle="bold" android:textSize="25dp"
             android:layout_alignLeft="@+id/button_history" android:layout_alignParentTop="false"

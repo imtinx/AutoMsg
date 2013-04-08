@@ -16,18 +16,19 @@
     <!-- add by chaocui200783-->
     <string name="history_task_title">历史任务状态</string>
     <string name="task_expenses">扣费 %1$d 元</string>
-    <string name="task_result">需发送%1$d条 已发送%2$d条 回复%3$d条</string>
+    <string name="task_result">需发送%1$d条 已发送%2$d条 成功%3$d条</string>
     <string name="task_status_title">发送状态</string>
     <string name="task_status_detail_text">发送明细</string>
     <string name="task_status_expect">需发送</string>
     <string name="task_status_sent">已发送</string>
-    <string name="task_status_replied">已回复</string>
+    <string name="task_status_replied">成功</string>
 
     <string name="task_command">发送 %1$s 至 %2$s</string>
     <string name="task_continue">继续</string>
     <string name="task_pause">暂停</string>
     <string name="task_start">开始</string>
     <string name="task_finish">完成</string>
+    <string name="task_finish_text">本月任务发送完成</string>
 
     <string name="user_detail_phone_holder">请输入手机号</string>
     <string name="user_detail_cost_max_holder">请输入消费上限</string>

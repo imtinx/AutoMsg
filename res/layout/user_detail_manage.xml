@@ -10,7 +10,7 @@
             android:layout_width="fill_parent"
             android:layout_height="fill_parent" android:background="@color/bg_content">
         <TextView style="@style/task_config_label" android:layout_width="fill_parent"
-                  android:layout_height="wrap_content" android:text="手机号" android:id="@+id/textView"
+                  android:layout_height="wrap_content" android:text="本机号" android:id="@+id/textView"
                   android:layout_gravity="left|center_vertical" android:paddingLeft="10dp"
                   android:paddingTop="10dp" android:paddingBottom="10dp" android:textStyle="bold"
                   android:textSize="16dp"/>

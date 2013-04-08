@@ -14,10 +14,7 @@ import android.widget.*;
 import com.sohu.wls.app.automsg.MyActivity;
 import com.sohu.wls.app.automsg.R;
 import com.sohu.wls.app.automsg.common.DBCommonService;
-import com.sohu.wls.app.automsg.common.ICommonService;
 import com.sohu.wls.app.automsg.common.SMSTaskModel;
-import com.sohu.wls.app.automsg.db.TaskDetailOpenHelper;
-import com.sohu.wls.app.automsg.db.UserDetailOpenHelper;
 import com.sohu.wls.app.automsg.tasklist.TaskStatusActivity;
 import com.sohu.wls.app.automsg.util.DatetimeUtil;
 
@@ -45,6 +42,7 @@ public class TaskConfigMainActivity extends Activity {
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.task_config_main);
 
         taskDetailListView = (ListView)findViewById(R.id.task_config_main_detaillistview);

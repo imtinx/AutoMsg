@@ -9,8 +9,6 @@ import android.util.Log;
 import com.sohu.wls.app.automsg.common.DBCommonService;
 import com.sohu.wls.app.automsg.common.ICommonService;
 import com.sohu.wls.app.automsg.common.SMSTaskModel;
-import com.sohu.wls.app.automsg.db.TaskDetailOpenHelper;
-import com.sohu.wls.app.automsg.db.UserDetailOpenHelper;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -27,10 +25,10 @@ public class SendSMSRunnable implements Runnable {
 
     private List<SMSTaskModel> tasklist;
     public volatile boolean running = false;
-    private volatile boolean stop = false;
+    public volatile boolean stop = false;
     private Iterator<SMSTaskModel> iterator;
     private ICommonService dbservice;
-    private static final int INTERVAL = 5000; //发送频率
+    private static final int INTERVAL = 2000; //发送频率
     public SendSMSRunnable(Context context) {
         this.dbservice= new DBCommonService(context);
         this.tasklist = dbservice.getCurrentMonthSMSTaskDetail();
@@ -65,6 +63,7 @@ public class SendSMSRunnable implements Runnable {
                     b.putInt("type", TaskStatusActivity.TASK_STATUS_FINISH_TAG);
                     msg.setData(b);
                     TaskStatusActivity.handler.sendMessage(msg);
+                    stop = true;
                     Log.i(ACTIVITY_TAG,"mission complete!");
                 }
             }
