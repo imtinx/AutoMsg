@@ -60,6 +60,11 @@ public class SendSMSRunnable implements Runnable {
                         Log.e(ACTIVITY_TAG,"thread error!",e);
                     }
                 }else{
+                    Message msg = new Message();
+                    Bundle b = new Bundle();
+                    b.putInt("type", TaskStatusActivity.TASK_STATUS_FINISH_TAG);
+                    msg.setData(b);
+                    TaskStatusActivity.handler.sendMessage(msg);
                     Log.i(ACTIVITY_TAG,"mission complete!");
                 }
             }

@@ -16,6 +16,7 @@ public class TaskStatusActivity extends Activity {
 
     public static final int TASK_STATUS_SENT_TAG = 0;
     public static final int TASK_STATUS_REPLY_TAG = 1;
+    public static final int TASK_STATUS_FINISH_TAG = 2;
 
     public int taskStatusExpectText = 0;
     public int taskStatusSentText = 0;
@@ -26,9 +27,11 @@ public class TaskStatusActivity extends Activity {
     private static TextView taskStatusExpectTextView;
     private static TextView taskStatusSentTextView;
     private static TextView taskStatusRepliedTextView;
+
+    private static  Button sendController;
     private static ProgressBar progressBar;
     private SendSMSRunnable smsRunnable;
-    private ReceiveSMSListener   receiveSMSListener;
+
     @Override
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
@@ -39,7 +42,7 @@ public class TaskStatusActivity extends Activity {
         taskStatusSentTextView = (TextView)findViewById(R.id.task_status_sent_text) ;
         taskStatusRepliedTextView = (TextView)findViewById(R.id.task_status_replied_text) ;
         //初始化继续/暂停按钮
-        Button sendController = (Button) findViewById(R.id.send_controller);
+        sendController = (Button) findViewById(R.id.send_controller);
         sendController.setText(R.string.task_start);
 
         sendController.setOnClickListener(new Button.OnClickListener() {
@@ -103,6 +106,12 @@ public class TaskStatusActivity extends Activity {
                     refreshTaskStatus();
                     break;
                 }
+                case TASK_STATUS_FINISH_TAG   :    {
+                    sendController.setText(R.string.task_finish);
+                    sendController.setEnabled(false);
+                    break;
+                }
+
             }
         }
     }

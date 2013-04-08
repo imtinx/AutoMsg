@@ -27,6 +27,7 @@
     <string name="task_continue">继续</string>
     <string name="task_pause">暂停</string>
     <string name="task_start">开始</string>
+    <string name="task_finish">完成</string>
 
     <string name="user_detail_phone_holder">请输入手机号</string>
     <string name="user_detail_cost_max_holder">请输入消费上限</string>
