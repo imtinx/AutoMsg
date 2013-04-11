@@ -48,7 +48,7 @@ public class TaskConfigMainActivity extends Activity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.task_config_main);
-        configButton = (Button)findViewById(R.id.toplimit_config_item_edit) ;
+        configButton = (Button)findViewById(R.id.toplimit_config_button) ;
         configButton.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View view) {

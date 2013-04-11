@@ -3,13 +3,19 @@
         android:orientation="vertical"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent" xmlns:android="http://schemas.android.com/apk/res/android"
-        android:background="@color/bg_content" android:gravity="center_vertical">
+        android:background="@drawable/bg" android:gravity="center_vertical">
     <ImageView
             android:layout_width="260dp"
             android:layout_height="100dp"
-            android:id="@+id/start_button" android:layout_gravity="center"
-            android:onClick="onItemClick" android:background="@drawable/main_start_button"/>
+            android:id="@+id/title_img" android:background="@drawable/title"
+            android:layout_gravity="center_horizontal" android:layout_marginBottom="20dp"/>
+    <ImageView
+            android:layout_width="260dp"
+            android:layout_height="100dp"
+            android:id="@+id/start_button" android:layout_gravity="center_horizontal|bottom"
+            android:onClick="onItemClick" android:background="@drawable/main_start_button"
+            android:layout_marginTop="30dp"/>
     <ImageView android:layout_width="260dp" android:layout_height="100dp" android:id="@+id/history_button"
-               android:layout_gravity="center" android:onClick="onItemClick"
-               android:background="@drawable/main_history_button" android:layout_marginTop="30dp"/>
+               android:layout_gravity="center_horizontal" android:onClick="onItemClick"
+               android:background="@drawable/main_history_button" android:layout_marginTop="10dp"/>
 </LinearLayout>
