@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" xmlns:android="http://schemas.android.com/apk/res/android"
+        android:gravity="center_horizontal">
+    <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/toplimit_config_item_edit"
+            android:inputType="number" android:width="160dp" android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp" android:text="150" android:gravity="right"/>
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="元"
+            android:id="@+id/textView" android:layout_toRightOf="@+id/toplimit_config_item_edit"
+            android:layout_alignTop="@+id/toplimit_config_item_edit" android:textSize="25dp"
+            android:layout_marginTop="8dp" android:layout_marginLeft="3dp"/>
+</RelativeLayout>

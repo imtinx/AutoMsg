@@ -61,7 +61,7 @@ public class TaskConfigManageService {
         items.add(new TaskConfigItem("CXBX","10086",1,10));
         items.add(new TaskConfigItem("CXGFX","10086",2,10));
         items.add(new TaskConfigItem("CXCCT","10086",2,10));
-        items.add(new TaskConfigItem("1","1066666611",1,1));
+        items.add(new TaskConfigItem("tt","1066666611",1,1));
 
         return items;
     }
