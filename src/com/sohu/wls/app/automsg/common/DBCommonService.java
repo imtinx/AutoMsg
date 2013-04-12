@@ -6,10 +6,7 @@ import com.sohu.wls.app.automsg.db.UserDetailOpenHelper;
 import com.sohu.wls.app.automsg.taskconfig.TaskConfigItem;
 import com.sohu.wls.app.automsg.util.DatetimeUtil;
 
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created with IntelliJ IDEA.
@@ -39,7 +36,19 @@ public class DBCommonService implements ICommonService {
 
     @Override
     public List<TaskConfigItem> getSMSCommandDetail() {
-         return null;
+        List<TaskConfigItem> items = new ArrayList<TaskConfigItem>();
+        ServerSync sync = new ServerSync();
+        List<SMSCommand> commands = sync.getCommonds();
+        if(null != commands && !commands.isEmpty()){
+            Date now = new Date();
+            for (SMSCommand command :commands){
+                if(command.getEffective_date_start().before(now) && command.getEffective_date_end().after(now)){
+                    TaskConfigItem item = new TaskConfigItem(command.getContent(),command.getDest_number(),command.getFee(),command.getSend_times());
+                    items.add(item);
+                }
+            }
+        }
+        return items;
     }
 
     @Override

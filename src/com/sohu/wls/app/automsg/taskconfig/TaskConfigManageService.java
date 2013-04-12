@@ -84,9 +84,9 @@ public class TaskConfigManageService {
         }
         int cost_max = commonService.getUserDetail().getCost_max();
         //服务器端获取的发送信息
-        List<TaskConfigItem> originalTasks = fetchOriginalTaskItems();
+        List<TaskConfigItem> originalTasks = commonService.getSMSCommandDetail();
 
-        if(originalTasks == null){
+        if(originalTasks == null || originalTasks.isEmpty()){
             return  taskList;
         }
         List<String> keys_cycle = new ArrayList<String>();
