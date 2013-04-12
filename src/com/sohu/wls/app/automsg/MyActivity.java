@@ -5,8 +5,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Toast;
-import com.sohu.wls.app.automsg.common.*;
+import com.sohu.wls.app.automsg.common.DBCommonService;
+import com.sohu.wls.app.automsg.common.SMSTaskModel;
+import com.sohu.wls.app.automsg.common.UserDetailModel;
 import com.sohu.wls.app.automsg.db.UserDetailOpenHelper;
 import com.sohu.wls.app.automsg.taskconfig.TaskConfigMainActivity;
 import com.sohu.wls.app.automsg.taskconfig.TaskConfigManageService;
@@ -46,9 +47,19 @@ public class MyActivity extends Activity {
         }
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent startMain = new Intent(Intent.ACTION_MAIN);
+        startMain.addCategory(Intent.CATEGORY_HOME);
+        startMain.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(startMain);
+        android.os.Process.killProcess(android.os.Process.myPid());
+    }
+
     public void onItemClick(View view){
         Intent intent = new Intent();
-        if (view.getId() == R.id.button_config){
+/*        if (view.getId() == R.id.button_config){
             intent.setClass(this,UserDetailManageActivity.class);
         }else if (view.getId() == R.id.button_guide){
             if (isConfigSaved()){
@@ -57,6 +68,11 @@ public class MyActivity extends Activity {
                 intent.setClass(this, TaskConfigMainActivity.class);
             }
         }else if (view.getId() == R.id.button_history){
+            intent.setClass(this, HistoryTaskActivity.class);
+        }*/
+        if (view.getId() == R.id.start_button) {
+            intent.setClass(this, TaskConfigMainActivity.class);
+        } else if (view.getId() == R.id.history_button) {
             intent.setClass(this, HistoryTaskActivity.class);
         }
         startActivity(intent);

@@ -15,6 +15,8 @@ import com.sohu.wls.app.automsg.MyActivity;
 import com.sohu.wls.app.automsg.R;
 import com.sohu.wls.app.automsg.common.DBCommonService;
 import com.sohu.wls.app.automsg.common.SMSTaskModel;
+import com.sohu.wls.app.automsg.common.UserDetailModel;
+import com.sohu.wls.app.automsg.db.UserDetailOpenHelper;
 import com.sohu.wls.app.automsg.tasklist.TaskStatusActivity;
 import com.sohu.wls.app.automsg.util.DatetimeUtil;
 
@@ -33,9 +35,11 @@ public class TaskConfigMainActivity extends Activity {
     /** Called when the activity is first created. */
     private ListView taskDetailListView;
     private ConfigListAdapter adapter;
+    private Button configButton;
     private AlertDialog alterConfigItemDialog;
     private AlertDialog saveConfigConfirmDialog;
     private AlertDialog saveConfigProgressDialog;
+    private AlertDialog  toplimitConfirmDialog;
     private TaskConfigManageService taskConfigManageService;
 
     @Override
@@ -44,7 +48,14 @@ public class TaskConfigMainActivity extends Activity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.task_config_main);
-
+        configButton = (Button)findViewById(R.id.toplimit_config_button) ;
+        configButton.setOnClickListener(new Button.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AlertDialog d = createToplimitConfirmDialog(TaskConfigMainActivity.this);
+                d.show();
+            }
+            });
         taskDetailListView = (ListView)findViewById(R.id.task_config_main_detaillistview);
         taskConfigManageService = new TaskConfigManageService(new DBCommonService(this),this);
         List<TaskConfigItem> configs = taskConfigManageService.initTasks();
@@ -167,7 +178,36 @@ public class TaskConfigMainActivity extends Activity {
         intent.setClass(this, MyActivity.class);
         startActivity(intent);
     }
+    /**
+     * 修改限额确认对话框
+     * @param context
+     * @return
+     */
+    public AlertDialog createToplimitConfirmDialog(final Context context){
 
+        if (toplimitConfirmDialog != null){
+            return toplimitConfirmDialog;
+        }
+        LayoutInflater inflater = LayoutInflater.from(context);
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setIcon(android.R.drawable.ic_dialog_alert);
+        builder.setTitle("修改发送限额");
+        builder.setView(inflater.inflate(R.layout.toplimit_config_item, null)) ;
+        builder.setPositiveButton(R.string.sure, new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int buttonid) {
+                    //保存发送限额
+            }
+        });
+
+        builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int arg1) {
+                dialog.dismiss();
+            }
+        });
+
+        toplimitConfirmDialog = builder.create();
+        return toplimitConfirmDialog;
+    }
     /**
      * 保存任务确认对话框
      * @param context
