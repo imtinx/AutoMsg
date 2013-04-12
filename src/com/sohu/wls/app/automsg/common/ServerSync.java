@@ -27,20 +27,18 @@ public class ServerSync {
 
     public List<SMSCommand> getCommonds(){
 
-        List<SMSCommand> commands = new ArrayList<SMSCommand>();
+        List<SMSCommand> commands;
         HttpClient httpClient = new DefaultHttpClient();
         HttpGet get = new HttpGet(server_url);
         try {
             HttpResponse httpResponse = httpClient.execute(get);
             if (httpResponse.getStatusLine().getStatusCode() == 200) {
                 String result = EntityUtils.toString(httpResponse.getEntity());
-                Log.i("json", ">>>>>>" + result);
                 commands = this.jsonToSMSCommand(result);
             } else{
                 return null;
             }
         } catch (Exception e) {
-            Log.i("error",e.toString());
             return null;
         }
         return commands;
@@ -64,7 +62,7 @@ public class ServerSync {
                 commands.add(smsCommand);
             }
         } catch (Exception e) {
-            Log.i("error", e.toString());
+            return null;
         }
         return  commands;
     }

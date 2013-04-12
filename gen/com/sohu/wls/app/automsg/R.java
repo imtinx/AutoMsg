@@ -15,23 +15,30 @@ public final class R {
         public static final int text_value=0x7f040001;
     }
     public static final class drawable {
-        public static final int main_button=0x7f020000;
-        public static final int task_config_button=0x7f020001;
-        public static final int task_config_detail_list_item=0x7f020002;
-        public static final int task_config_list_item=0x7f020004;
-        public static final int task_config_list_item_pressed=0x7f020003;
+        public static final int bg=0x7f020000;
+        public static final int his_button=0x7f020001;
+        public static final int his_button_press=0x7f020002;
+        public static final int icon=0x7f020003;
+        public static final int main_history_button=0x7f020004;
+        public static final int main_start_button=0x7f020005;
+        public static final int start_button=0x7f020006;
+        public static final int start_button_press=0x7f020007;
+        public static final int task_config_button=0x7f020008;
+        public static final int task_config_detail_list_item=0x7f020009;
+        public static final int task_config_list_item=0x7f02000c;
+        public static final int task_config_list_item_pressed=0x7f02000b;
+        public static final int title=0x7f02000a;
     }
     public static final class id {
-        public static final int btn_save_user_detail=0x7f07002d;
-        public static final int button_config=0x7f070008;
-        public static final int button_guide=0x7f070006;
-        public static final int button_history=0x7f070007;
+        public static final int btn_save_user_detail=0x7f07002f;
+        public static final int history_button=0x7f070008;
         public static final int history_task_label_title=0x7f070000;
         public static final int history_task_list=0x7f070002;
         public static final int history_task_title=0x7f070001;
-        public static final int progressBar=0x7f07001e;
-        public static final int send_controller=0x7f070021;
-        public static final int send_progress=0x7f07002a;
+        public static final int progressBar=0x7f07001f;
+        public static final int send_controller=0x7f070022;
+        public static final int send_progress=0x7f07002b;
+        public static final int start_button=0x7f070007;
         public static final int task_config_item_content=0x7f07000a;
         public static final int task_config_item_edit_content=0x7f070011;
         public static final int task_config_item_edit_count=0x7f070016;
@@ -49,16 +56,16 @@ public final class R {
         public static final int task_expenses=0x7f070004;
         public static final int task_month=0x7f070003;
         public static final int task_result=0x7f070005;
-        public static final int task_status_detail=0x7f070023;
-        public static final int task_status_expect_text=0x7f070025;
-        public static final int task_status_expect_view=0x7f070024;
-        public static final int task_status_label_title=0x7f07001f;
-        public static final int task_status_replied_text=0x7f070029;
-        public static final int task_status_replied_view=0x7f070028;
-        public static final int task_status_sent_text=0x7f070026;
-        public static final int task_status_sent_view=0x7f070027;
-        public static final int task_status_text=0x7f070022;
-        public static final int task_status_title=0x7f070020;
+        public static final int task_status_detail=0x7f070024;
+        public static final int task_status_expect_text=0x7f070026;
+        public static final int task_status_expect_view=0x7f070025;
+        public static final int task_status_label_title=0x7f070020;
+        public static final int task_status_replied_text=0x7f07002a;
+        public static final int task_status_replied_view=0x7f070029;
+        public static final int task_status_sent_text=0x7f070027;
+        public static final int task_status_sent_view=0x7f070028;
+        public static final int task_status_text=0x7f070023;
+        public static final int task_status_title=0x7f070021;
         public static final int textView=0x7f070009;
         public static final int textView1=0x7f07000b;
         public static final int textView2=0x7f07000d;
@@ -66,8 +73,11 @@ public final class R {
         public static final int textView4=0x7f070014;
         public static final int textView5=0x7f070015;
         public static final int textView7=0x7f07001c;
-        public static final int user_detail_cost_max=0x7f07002c;
-        public static final int user_detail_phone=0x7f07002b;
+        public static final int title_img=0x7f070006;
+        public static final int toplimit_config_button=0x7f07001e;
+        public static final int toplimit_config_item_edit=0x7f07002c;
+        public static final int user_detail_cost_max=0x7f07002e;
+        public static final int user_detail_phone=0x7f07002d;
     }
     public static final class layout {
         public static final int history_task=0x7f030000;
@@ -78,7 +88,8 @@ public final class R {
         public static final int task_config_main=0x7f030005;
         public static final int task_config_save_progress=0x7f030006;
         public static final int task_status=0x7f030007;
-        public static final int user_detail_manage=0x7f030008;
+        public static final int toplimit_config_item=0x7f030008;
+        public static final int user_detail_manage=0x7f030009;
     }
     public static final class string {
         public static final int app_name=0x7f050000;
