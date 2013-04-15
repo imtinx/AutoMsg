@@ -81,5 +81,11 @@ public class DBCommonService implements ICommonService {
         return taskDetailOpenHelper.queryTasksCount(year,month);
     }
 
+    public UserDetailOpenHelper getUserDetailOpenHelper() {
+        return userDetailOpenHelper;
+    }
 
+    public TaskDetailOpenHelper getTaskDetailOpenHelper() {
+        return taskDetailOpenHelper;
+    }
 }
