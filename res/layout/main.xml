@@ -18,4 +18,9 @@
     <ImageView android:layout_width="260dp" android:layout_height="100dp" android:id="@+id/history_button"
                android:layout_gravity="center_horizontal" android:onClick="onItemClick"
                android:background="@drawable/main_history_button" android:layout_marginTop="10dp"/>
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="注意：请确认你处于良好的网络覆盖范围内"
+            android:id="@+id/textView" android:layout_gravity="center" android:textColor="#ffffff"/>
 </LinearLayout>
