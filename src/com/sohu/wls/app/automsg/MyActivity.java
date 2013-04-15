@@ -38,13 +38,13 @@ public class MyActivity extends Activity {
             Log.e(ACTIVITY_TAG,"load user detail error",e);
             e.printStackTrace();
         }
-        if (detailModel == null || detailModel.getPhone_number() == null || "".equals(detailModel.getPhone_number())) {
-            Intent intent = new Intent();
-            intent.setClass(this,UserDetailManageActivity.class);
-            startActivity(intent);
-        } else{
-
-        }
+//        if (detailModel == null || detailModel.getPhone_number() == null || "".equals(detailModel.getPhone_number())) {
+//            Intent intent = new Intent();
+//            intent.setClass(this,UserDetailManageActivity.class);
+//            startActivity(intent);
+//        } else{
+//
+//        }
     }
 
     @Override

@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.util.Log;
 import android.widget.Toast;
 import com.sohu.wls.app.automsg.common.ICommonService;
+import com.sohu.wls.app.automsg.common.SMSTaskModel;
 import com.sohu.wls.app.automsg.common.UserDetailModel;
 
 import java.util.*;
@@ -76,17 +77,29 @@ public class TaskConfigManageService {
         taskList.clear();
         UserDetailModel detailModel = commonService.getUserDetail();
         if (detailModel == null){
-            return taskList;
+           detailModel = new UserDetailModel();
+           detailModel.setCost_max(0);
         }
         if (detailModel.getCost_max() == 0){
             Toast.makeText(activity,"目前消费限额设置为0",Toast.LENGTH_LONG);
-            return taskList;
+
         }
-        int cost_max = commonService.getUserDetail().getCost_max();
+        int cost_max = detailModel.getCost_max();
+
+        try {
+            if (commonService.getCurrentMonthSMSTaskDetail().size()>0){
+                cost_max = 0;
+            }
+        } catch (Exception e) {
+            Log.w(TaskConfigMainActivity.TAG,"fail to query tasks of current month");
+            cost_max = 0;
+        }
+
         //服务器端获取的发送信息
         List<TaskConfigItem> originalTasks = commonService.getSMSCommandDetail();
 
         if(originalTasks == null || originalTasks.isEmpty()){
+            Toast.makeText(activity,"获取保代码指令信息失败或本月暂无保代码指令",Toast.LENGTH_LONG);
             return  taskList;
         }
         List<String> keys_cycle = new ArrayList<String>();
@@ -145,9 +158,9 @@ public class TaskConfigManageService {
         int cost_max = detailModel.getCost_max();
         TaskConfigItem old = tasks.get(generateKey(model));
         //新设置数量导致总消费超限额
-        if((old.getFee()*model.getTotal()-old.getCost()+getTotalSendCost())>cost_max){
-            return false;
-        }
+//        if((old.getFee()*model.getTotal()-old.getCost()+getTotalSendCost())>cost_max){
+//            return false;
+//        }
         old.setTotal(model.getTotal());
         return true;
     }
@@ -184,7 +197,57 @@ public class TaskConfigManageService {
         return sum;
     }
 
+    /**
+     * 当月是否已经发送过短信
+     * @return
+     */
+    public boolean isCurrentMonthHasTask(){
+        return commonService.getCurrentMonthSMSTaskDetail().size()>0;
+    }
+
+    /**
+     * 当月任务是否已经都发送完毕
+     * @return
+     */
+    public boolean isCurrentMonthTaskDone(){
+        List<SMSTaskModel> tasks = commonService.getCurrentMonthSMSTaskDetail();
+        Log.v(TaskConfigMainActivity.TAG,"current month task size:"+tasks.size());
+        if(tasks.size() == 0){
+            return true;
+        }
+
+        for (SMSTaskModel task : tasks){
+            if (!task.isSms_sended()){
+                return false;
+            }
+        }
+        return true;
+    }
+
+    /**
+     * 获得当月总消费
+     * @return
+     */
+    public int getCurrentMonthSavedTaskCost(){
+        List<SMSTaskModel> tasks = commonService.getCurrentMonthSMSTaskDetail();
+        int costTotal = 0;
+        if (tasks == null){
+            return 0;
+        }
+        for (SMSTaskModel task : tasks){
+            costTotal += task.getSms_fee();
+
+        }
+        return costTotal;
+    }
+
+
+
     public ICommonService getCommonService() {
         return commonService;
+    }
+
+    public static Map<String, TaskConfigItem> getTasks() {
+        return tasks;
     }
 }

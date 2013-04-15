@@ -25,7 +25,6 @@
         <activity android:name=".taskconfig.TaskConfigMainActivity" android:label="@string/app_name" android:screenOrientation="portrait"/>
         <activity android:name=".tasklist.TaskStatusActivity" android:label="@string/app_name" android:screenOrientation="portrait"/>
         <activity android:name=".tasklist.HistoryTaskActivity" android:label="@string/app_name"  android:screenOrientation="portrait"/>
-        <activity android:name=".UserDetailManageActivity" android:label="@string/app_name" android:screenOrientation="portrait"/>
 
     </application>
 </manifest> 

@@ -22,6 +22,7 @@ import com.sohu.wls.app.automsg.util.DatetimeUtil;
 
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created with IntelliJ IDEA.
@@ -53,12 +54,21 @@ public class TaskConfigMainActivity extends Activity {
             @Override
             public void onClick(View view) {
                 AlertDialog d = createToplimitConfirmDialog(TaskConfigMainActivity.this);
+
                 d.show();
+
+                EditText topcost_field = (EditText) d.findViewById(R.id.toplimit_config_item_edit);
+
+                String topcost = "" + getUserDetailTopCost();
+
+                topcost_field.setText(topcost);
+                topcost_field.setSelection(topcost_field.getText().toString().length());
             }
             });
         taskDetailListView = (ListView)findViewById(R.id.task_config_main_detaillistview);
         taskConfigManageService = new TaskConfigManageService(new DBCommonService(this),this);
         List<TaskConfigItem> configs = taskConfigManageService.initTasks();
+        Log.v(TAG,"view create! init task size: "+ configs.size());
         adapter = new ConfigListAdapter(this,configs);
         taskDetailListView.setAdapter(adapter);
         taskDetailListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
@@ -85,12 +95,31 @@ public class TaskConfigMainActivity extends Activity {
                 countField.setText(configModel.getTotal()+"");
                 countField.setSelection(countField.getText().toString().length());
 
-
                 return true;
             }
 
         });
         updateSummaryInfo();
+
+        if(getUserDetailTopCost() == 0){
+            Toast.makeText(this, "请点击【修改限额】配置月最高消费额度", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    /**
+     * 获取用户消费限额
+     * @return
+     */
+    public int getUserDetailTopCost(){
+        UserDetailOpenHelper userDetailOpenHelper = ((DBCommonService)taskConfigManageService.getCommonService()).getUserDetailOpenHelper();
+
+        try {
+            UserDetailModel userDetailModel = userDetailOpenHelper.queryUserDetailInfo();
+            return userDetailModel.getCost_max();
+        } catch (Exception e) {
+            Log.w(TAG,e);
+            return 0;
+        }
 
     }
 
@@ -105,17 +134,8 @@ public class TaskConfigMainActivity extends Activity {
         totalField.setText(taskConfigManageService.getTotalSendNumber()+"");
     }
 
-    /**
-     * 当月是否已保存过配置
-     * @return
-     */
-    public boolean isConfigSaved(){
-        List<SMSTaskModel> tasks =  taskConfigManageService.getCommonService().getCurrentMonthSMSTaskDetail();
-        if (tasks.size()>0){
-            return true;
-        }
-        return false;
-    }
+
+
 
     /**
      * 点击确定按钮
@@ -124,17 +144,28 @@ public class TaskConfigMainActivity extends Activity {
     public void onSureButtonClick(View view){
         TextView totalField = (TextView) findViewById(R.id.task_config_main_total);
         Log.v(TAG,"activity:"+(TaskConfigMainActivity.this));
-        if (isConfigSaved()){
-            Toast.makeText(this, R.string.task_config_saved, Toast.LENGTH_LONG).show();
-            return;
-        }
+
         if(adapter.getConfigs() != null && adapter.getConfigs().size()>0
                 && !totalField.getText().toString().equals("0")){
 
-               createSaveConfirmDialog(TaskConfigMainActivity.this).show();
-
+            AlertDialog dialog = createSaveConfirmDialog(TaskConfigMainActivity.this);
+            String msg = "";
+            if ((taskConfigManageService.getCurrentMonthSavedTaskCost()+
+                    taskConfigManageService.getTotalSendCost())>getUserDetailTopCost())  {
+                msg += "本月费用已超过消费限额，";
+            }
+            dialog.setMessage(msg+"确认保存配置？");
+            dialog.show();
         }else{
-            Toast.makeText(this, R.string.task_config_send_none_msg, Toast.LENGTH_LONG).show();
+            //如果任务都发送完毕，保持在该界面
+            if (taskConfigManageService.isCurrentMonthTaskDone()){
+                Toast.makeText(this, R.string.task_config_send_none_msg, Toast.LENGTH_LONG).show();
+            //跳转发送界面
+            }else{
+                Intent intent = new Intent();
+                intent.setClass(TaskConfigMainActivity.this, TaskStatusActivity.class);
+                startActivity(intent);
+            }
         }
     }
 
@@ -152,8 +183,9 @@ public class TaskConfigMainActivity extends Activity {
 
             int year = DatetimeUtil.getCurrentYear();
             int month = DatetimeUtil.getCurrentMonth();
+            int sendedtaskcount = taskConfigManageService.getCommonService().getCurrentMonthSMSTaskDetail().size();
             for (TaskConfigItem item : adapter.getConfigs()){
-                for (String id : item.getIds()){
+                for (String id : item.getIds(sendedtaskcount)){
                     SMSTaskModel task = new SMSTaskModel(id,item.getContent(),item.getSpcode(),item.getFee(),year,month);
                     try {
                         taskConfigManageService.getCommonService().addSMSTask(task);
@@ -193,9 +225,45 @@ public class TaskConfigMainActivity extends Activity {
         builder.setIcon(android.R.drawable.ic_dialog_alert);
         builder.setTitle("修改发送限额");
         builder.setView(inflater.inflate(R.layout.toplimit_config_item, null)) ;
+
+
         builder.setPositiveButton(R.string.sure, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int buttonid) {
-                    //保存发送限额
+                AlertDialog d = (AlertDialog)dialog;
+                EditText topcost_field = (EditText) d.findViewById(R.id.toplimit_config_item_edit);
+                //保存发送限额
+                String val_edit = topcost_field.getText().toString();
+                if (val_edit == null || "".equals(val_edit)){
+                    Toast.makeText(TaskConfigMainActivity.this, R.string.user_detail_cost_max_empty_msg, Toast.LENGTH_LONG).show();
+                    return;
+                }
+
+                UserDetailModel userDetailModel = new UserDetailModel();
+                userDetailModel.setPhone_number("");
+                userDetailModel.setCost_max(Integer.parseInt(val_edit));
+
+                try {
+                    UserDetailOpenHelper userDetailOpenHelper = ((DBCommonService)taskConfigManageService.getCommonService()).getUserDetailOpenHelper();
+                    userDetailOpenHelper.updateUserDetail(userDetailModel);
+                    Toast.makeText(TaskConfigMainActivity.this, R.string.user_detail_save_success_msg, Toast.LENGTH_SHORT).show();
+                    if (!taskConfigManageService.isCurrentMonthHasTask()){
+                        List<TaskConfigItem> configs = adapter.getConfigs();
+                        taskConfigManageService.initTasks();
+                        Map<String,TaskConfigItem> new_configs = taskConfigManageService.getTasks();
+
+                        for (TaskConfigItem config : configs){
+                            if (new_configs.containsKey(taskConfigManageService.generateKey(config))){
+                                config.setTotal(new_configs.get(taskConfigManageService.generateKey(config)).getTotal());
+                            }
+                        }
+
+                        adapter.notifyDataSetChanged();
+                        updateSummaryInfo();
+                    }
+                } catch (Exception e) {
+                    Toast.makeText(TaskConfigMainActivity.this, R.string.user_detail_save_fail_msg+"["+e.getMessage()+"]", Toast.LENGTH_LONG).show();
+                }
+
             }
         });
 
@@ -206,6 +274,8 @@ public class TaskConfigMainActivity extends Activity {
         });
 
         toplimitConfirmDialog = builder.create();
+
+
         return toplimitConfirmDialog;
     }
     /**
@@ -222,7 +292,7 @@ public class TaskConfigMainActivity extends Activity {
         builder.setIcon(android.R.drawable.ic_dialog_alert);
         builder.setTitle("提醒");
 
-        builder.setMessage("当前配置保存后不可变更，是否保存?");
+
         builder.setPositiveButton(R.string.sure, new DialogInterface.OnClickListener() {
 
             public void onClick(DialogInterface dialog, int buttonid) {
@@ -287,10 +357,7 @@ public class TaskConfigMainActivity extends Activity {
                     TextView spcodeField = (TextView) d.findViewById(R.id.task_config_item_edit_spcode);
                     EditText countField = (EditText) d.findViewById(R.id.task_config_item_edit_count);
 
-                    if (isConfigSaved()){
-                        Toast.makeText(context, R.string.task_config_saved, Toast.LENGTH_LONG).show();
-                        return;
-                    }
+
 
                     if(countField.getText().toString().trim().equals("")){
                         return;

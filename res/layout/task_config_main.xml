@@ -59,7 +59,7 @@
 	<TextView
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
-			android:text="总发送"
+			android:text="本次发送"
 			android:id="@+id/textView5" android:layout_alignLeft="@+id/task_config_label_title"
 			android:layout_below="@+id/task_config_label_title" android:layout_marginTop="15dp"
 			android:layout_marginLeft="50dp" android:textColor="@color/text_value" android:textStyle="bold"
@@ -71,7 +71,7 @@
 			android:id="@+id/task_config_main_total"
 			android:textSize="30dp" android:textStyle="bold" android:textColor="@color/text_value"
 			android:layout_alignLeft="@+id/textView5" android:layout_below="@+id/textView5"/>
-	<TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="总消费"
+	<TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="本次消费"
 	          android:id="@+id/textView7"
 	          android:textColor="@color/text_value" android:textStyle="bold"
 	          android:layout_alignRight="@+id/task_config_label_title" android:layout_alignTop="@+id/textView5"
@@ -79,7 +79,7 @@
 	<TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="148"
 	          android:id="@+id/task_config_main_cost"
 	          android:textSize="30dp" android:textStyle="bold" android:textColor="@color/text_value"
-	          android:layout_alignRight="@+id/textView7" android:layout_below="@+id/textView5"/>
+              android:layout_alignRight="@+id/textView7" android:layout_below="@+id/textView5"/>
     <Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="修改限额"
             android:id="@+id/toplimit_config_button"
             android:width="80dp"

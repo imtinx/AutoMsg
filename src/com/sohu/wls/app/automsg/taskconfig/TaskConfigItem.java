@@ -124,14 +124,14 @@ public class TaskConfigItem {
      * spcode-content-yyyymm-sn
      * @return
      */
-    public List<String> getIds() {
+    public List<String> getIds(int start) {
         if(this.ids == null){
             this.ids = new ArrayList<String>();
         }
         this.ids.clear();
         String date_part = new SimpleDateFormat("yyyyMM").format(new Date());
         for (int i=0;i<getTotal();i++){
-            this.ids.add(getSpcode()+"-"+getContent()+"-"+date_part+"-"+(i+1));
+            this.ids.add(getSpcode()+"-"+getContent()+"-"+date_part+"-"+(i+1+start));
         }
         return ids;
     }

@@ -10,9 +10,9 @@
     <string name="task_config_send_none_msg">没有要发送的短信配置</string>
     <string name="user_detail_cost_max_empty_msg">请输入月消费上限</string>
     <string name="user_detail_phone_invalid_msg">请输入正确手机号</string>
-    <string name="user_detail_save_fail_msg">基本信息保存失败</string>
-    <string name="user_detail_save_success_msg">基本信息保存成功</string>
-    <string name="user_detail_query_fail_msg">基本信息获取失败</string>
+    <string name="user_detail_save_fail_msg">限额保存失败</string>
+    <string name="user_detail_save_success_msg">限额保存成功</string>
+    <string name="user_detail_query_fail_msg">限额获取失败</string>
     <string name="trigger_user_detail_save">onUpdateUserDetailButtonClick</string>
     <!-- add by chaocui200783-->
     <string name="history_task_title">历史任务状态</string>
