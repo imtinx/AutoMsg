@@ -32,54 +32,55 @@
             android:layout_below="@+id/task_status_label_title"
             android:layout_alignRight="@+id/task_status_label_title" android:background="@color/bg_content"
             android:layout_alignParentBottom="true"/>
-    <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/task_status_detail_text"
-            android:id="@+id/task_status_detail" android:layout_alignLeft="@+id/task_status_label_title"
-            android:layout_below="@+id/task_status_text" android:textColor="#000" android:textSize="16dp"
-            android:textStyle="bold" android:paddingLeft="5dp" android:paddingTop="5dp"/>
+    <FrameLayout
+            android:layout_width="fill_parent"
+            android:layout_height="150dp" android:layout_below="@+id/task_status_label_title">
+        <TextView android:layout_width="80dp" android:layout_height="wrap_content" android:text="@string/task_status_expect"
+                  android:id="@+id/task_status_expect_view"
+                  android:textColor="#000" android:textStyle="bold"
+                  android:paddingLeft="5dp" android:paddingBottom="10dp" android:gravity="right" android:textSize="20dp"
+                  android:layout_below="@+id/task_status_label_title"
+                  android:layout_marginTop="20dp"
+                  android:layout_alignLeft="@+id/task_status_label_title"
+                  android:layout_gravity="left|center_vertical"/>
+        <TextView android:layout_width="80dp" android:layout_height="wrap_content" android:text="0"
+                  android:id="@+id/task_status_expect_text" android:textSize="30dp" android:textStyle="bold"
+                  android:textColor="#000"
+                  android:gravity="right"
+                  android:layout_below="@+id/task_status_expect_view"
+                  android:layout_alignLeft="@+id/task_status_expect_view" android:layout_gravity="left|bottom"/>
+        <TextView android:layout_width="80dp" android:layout_height="wrap_content" android:text="@string/task_status_sent"
+                  android:id="@+id/task_status_sent_view" android:textColor="#000" android:textStyle="bold"
+                  android:paddingLeft="5dp" android:paddingBottom="10dp"
+                  android:gravity="right" android:textSize="20dp"
+                  android:layout_centerHorizontal="true"
+                  android:layout_marginTop="20dp"
+                  android:layout_below="@+id/task_status_label_title"
+                  android:layout_alignLeft="@+id/task_status_label_title" android:layout_gravity="center"/>
+        <TextView android:layout_width="80dp" android:layout_height="wrap_content" android:text="0"
+                  android:id="@+id/task_status_sent_text" android:textSize="30dp" android:textStyle="bold"
+                  android:textColor="#000"
+                  android:gravity="right"
+                  android:layout_alignParentLeft="false"
+                  android:layout_alignParentTop="false" android:layout_below="@+id/task_status_sent_view"
+                  android:layout_alignLeft="@+id/task_status_sent_view"
+                  android:layout_gravity="center_horizontal|bottom"/>
+        <TextView android:layout_width="80dp" android:layout_height="wrap_content"
+                  android:text="@string/task_status_replied" android:id="@+id/task_status_replied_view"
+                  android:textColor="#000" android:textStyle="bold" android:paddingLeft="5dp" android:paddingBottom="10dp"
+                  android:gravity="right"
+                  android:textSize="20dp" android:layout_alignParentLeft="true"
+                  android:layout_below="@+id/task_status_label_title"
+                  android:layout_alignLeft="@+id/task_status_label_title" android:layout_marginTop="20dp"
+                  android:layout_gravity="right|center_vertical" android:layout_marginRight="20dp"/>
+        <TextView android:layout_width="80dp" android:layout_height="wrap_content" android:text="0"
+                  android:id="@+id/task_status_replied_text" android:textSize="30dp" android:textStyle="bold"
+                  android:textColor="#000"
+                  android:gravity="right" android:layout_alignLeft="@+id/task_status_replied_view"
+                  android:layout_below="@+id/task_status_replied_view" android:layout_gravity="right|bottom"
+                  android:layout_marginRight="20dp"/>
+    </FrameLayout>
 
-    <TextView android:layout_width="80dp" android:layout_height="wrap_content" android:text="@string/task_status_expect"
-              android:id="@+id/task_status_expect_view"
-              android:textColor="#000" android:textStyle="bold"
-              android:paddingLeft="5dp" android:paddingBottom="10dp" android:gravity="right" android:textSize="20dp"
-              android:layout_below="@+id/task_status_label_title"
-              android:layout_marginLeft="10dp" android:layout_marginTop="70dp"
-              android:layout_alignLeft="@+id/task_status_label_title"/>
-    <TextView android:layout_width="80dp" android:layout_height="wrap_content" android:text="0"
-              android:id="@+id/task_status_expect_text" android:textSize="30dp" android:textStyle="bold"
-              android:textColor="#000"
-              android:gravity="right"
-              android:layout_below="@+id/task_status_expect_view"
-              android:layout_alignLeft="@+id/task_status_expect_view"/>
-    <TextView android:layout_width="80dp" android:layout_height="wrap_content" android:text="0"
-              android:id="@+id/task_status_sent_text" android:textSize="30dp" android:textStyle="bold"
-              android:textColor="#000"
-              android:gravity="right"
-              android:layout_alignParentLeft="false"
-              android:layout_alignParentTop="false" android:layout_below="@+id/task_status_sent_view"
-              android:layout_alignLeft="@+id/task_status_sent_view"/>
-    <TextView android:layout_width="80dp" android:layout_height="wrap_content" android:text="@string/task_status_sent"
-              android:id="@+id/task_status_sent_view" android:textColor="#000" android:textStyle="bold"
-              android:paddingLeft="5dp" android:paddingBottom="10dp"
-              android:gravity="right" android:textSize="20dp"
-              android:layout_centerHorizontal="true"
-              android:layout_marginLeft="100dp" android:layout_marginTop="70dp"
-              android:layout_below="@+id/task_status_label_title"
-              android:layout_alignLeft="@+id/task_status_label_title"/>
-    <TextView android:layout_width="80dp" android:layout_height="wrap_content"
-              android:text="@string/task_status_replied" android:id="@+id/task_status_replied_view"
-              android:textColor="#000" android:textStyle="bold" android:paddingLeft="5dp" android:paddingBottom="10dp"
-              android:gravity="right"
-              android:textSize="20dp" android:layout_alignParentLeft="true" android:layout_marginLeft="190dp"
-              android:layout_below="@+id/task_status_label_title"
-              android:layout_alignLeft="@+id/task_status_label_title" android:layout_marginTop="70dp"/>
-    <TextView android:layout_width="80dp" android:layout_height="wrap_content" android:text="0"
-              android:id="@+id/task_status_replied_text" android:textSize="30dp" android:textStyle="bold"
-              android:textColor="#000"
-              android:gravity="right" android:layout_alignLeft="@+id/task_status_replied_view"
-              android:layout_below="@+id/task_status_replied_view"/>
     <FrameLayout
             android:layout_width="fill_parent"
             android:layout_height="100dp"

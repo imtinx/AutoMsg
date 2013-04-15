@@ -1,27 +1,24 @@
 package com.sohu.wls.app.automsg;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import com.sohu.wls.app.automsg.common.DBCommonService;
-import com.sohu.wls.app.automsg.common.SMSTaskModel;
-import com.sohu.wls.app.automsg.common.UserDetailModel;
 import com.sohu.wls.app.automsg.db.UserDetailOpenHelper;
 import com.sohu.wls.app.automsg.taskconfig.TaskConfigMainActivity;
 import com.sohu.wls.app.automsg.taskconfig.TaskConfigManageService;
 import com.sohu.wls.app.automsg.tasklist.HistoryTaskActivity;
 import com.sohu.wls.app.automsg.tasklist.TaskStatusActivity;
 
-import java.util.List;
 
 
 public class MyActivity extends Activity {
 
     private TaskConfigManageService taskConfigManageService;
     private UserDetailOpenHelper userDetailOpenHelper;
-    private static final String ACTIVITY_TAG="MyActivity";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -31,20 +28,6 @@ public class MyActivity extends Activity {
         if (userDetailOpenHelper == null){
             userDetailOpenHelper = new UserDetailOpenHelper(this);
         }
-        UserDetailModel detailModel = null;
-        try {
-            detailModel = userDetailOpenHelper.queryUserDetailInfo();
-        } catch (Exception e) {
-            Log.e(ACTIVITY_TAG,"load user detail error",e);
-            e.printStackTrace();
-        }
-//        if (detailModel == null || detailModel.getPhone_number() == null || "".equals(detailModel.getPhone_number())) {
-//            Intent intent = new Intent();
-//            intent.setClass(this,UserDetailManageActivity.class);
-//            startActivity(intent);
-//        } else{
-//
-//        }
     }
 
     @Override
@@ -58,33 +41,29 @@ public class MyActivity extends Activity {
     }
 
     public void onItemClick(View view){
-        Intent intent = new Intent();
-/*        if (view.getId() == R.id.button_config){
-            intent.setClass(this,UserDetailManageActivity.class);
-        }else if (view.getId() == R.id.button_guide){
-            if (isConfigSaved()){
-                intent.setClass(this, TaskStatusActivity.class);
-            }else{
-                intent.setClass(this, TaskConfigMainActivity.class);
-            }
-        }else if (view.getId() == R.id.button_history){
-            intent.setClass(this, HistoryTaskActivity.class);
-        }*/
+        boolean taskDone = taskConfigManageService.isCurrentMonthTaskDone();
         if (view.getId() == R.id.start_button) {
-            intent.setClass(this, TaskConfigMainActivity.class);
+            if(taskDone){
+                startActivity(new Intent(MyActivity.this, TaskConfigMainActivity.class));
+            } else{
+                AlertDialog.Builder builder = new AlertDialog.Builder(MyActivity.this);
+                builder.setIcon(android.R.drawable.ic_dialog_alert);
+                builder.setTitle("上次发送任务尚未完成");
+                builder.setPositiveButton("继续发送", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int arg1) {
+                        startActivity(new Intent(MyActivity.this,TaskStatusActivity.class));
+                    }
+                });
+                builder.setNegativeButton("追加任务", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int arg1) {
+                        startActivity(new Intent(MyActivity.this, TaskConfigMainActivity.class));
+                    }
+                });
+                builder.show();
+            }
         } else if (view.getId() == R.id.history_button) {
-            intent.setClass(this, HistoryTaskActivity.class);
+            startActivity(new Intent(MyActivity.this, HistoryTaskActivity.class));
         }
-        startActivity(intent);
     }
-
-    public boolean isConfigSaved(){
-        List<SMSTaskModel> tasks =  taskConfigManageService.getCommonService().getCurrentMonthSMSTaskDetail();
-        if (tasks.size()>0){
-            return true;
-        }
-        return false;
-    }
-
 
 }
