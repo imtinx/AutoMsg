@@ -2,6 +2,7 @@ package com.sohu.wls.app.automsg;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -32,12 +33,28 @@ public class MyActivity extends Activity {
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
-        Intent startMain = new Intent(Intent.ACTION_MAIN);
-        startMain.addCategory(Intent.CATEGORY_HOME);
-        startMain.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        startActivity(startMain);
-        android.os.Process.killProcess(android.os.Process.myPid());
+        //super.onBackPressed();
+        Dialog dialog = new AlertDialog.Builder(MyActivity.this)
+                .setTitle("信息提示")
+                .setMessage("确定要退出系统吗?")
+                .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Intent startMain = new Intent(Intent.ACTION_MAIN);
+                        startMain.addCategory(Intent.CATEGORY_HOME);
+                        startMain.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(startMain);
+                        android.os.Process.killProcess(android.os.Process.myPid());
+                    }
+                })
+                .setNeutralButton("取消", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        return;
+                    }
+                })
+                .create();
+        dialog.show();
     }
 
     public void onItemClick(View view){

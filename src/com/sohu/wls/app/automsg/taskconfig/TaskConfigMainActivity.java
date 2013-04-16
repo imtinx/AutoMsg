@@ -84,7 +84,7 @@ public class TaskConfigMainActivity extends Activity {
                 TextView contentField = (TextView) d.findViewById(R.id.task_config_item_edit_content);
                 TextView spcodeField = (TextView) d.findViewById(R.id.task_config_item_edit_spcode);
                 TextView feeField = (TextView) d.findViewById(R.id.task_config_item_edit_fee);
-                EditText countField = (EditText) d.findViewById(R.id.task_config_item_edit_count);
+                final EditText countField = (EditText) d.findViewById(R.id.task_config_item_edit_count);
 
                 TaskConfigItem configModel = adapter.getConfigs().get(position);
 
@@ -94,6 +94,29 @@ public class TaskConfigMainActivity extends Activity {
 
                 countField.setText(configModel.getTotal()+"");
                 countField.setSelection(countField.getText().toString().length());
+
+
+                Button buttonPlus1 = (Button) d.findViewById(R.id.button_plus1);
+                buttonPlus1.setOnClickListener(new Button.OnClickListener(){
+                    public void onClick(View v) {
+                        String text = countField.getText().toString();
+                        countField.setText(String.valueOf(Integer.parseInt(text)+1));
+                    }
+                });
+                Button buttonPlus10 = (Button) d.findViewById(R.id.button_plus10);
+                buttonPlus10.setOnClickListener(new Button.OnClickListener(){
+                    public void onClick(View v) {
+                        String text = countField.getText().toString();
+                        countField.setText(String.valueOf(Integer.parseInt(text)+10));
+                    }
+                });
+
+                Button buttonReset0 = (Button) d.findViewById(R.id.button_reset0);
+                buttonReset0.setOnClickListener(new Button.OnClickListener(){
+                    public void onClick(View v) {
+                        countField.setText(String.valueOf(0));
+                    }
+                });
 
                 return true;
             }

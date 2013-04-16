@@ -38,47 +38,48 @@
         <TextView android:layout_width="80dp" android:layout_height="wrap_content" android:text="@string/task_status_expect"
                   android:id="@+id/task_status_expect_view"
                   android:textColor="#000" android:textStyle="bold"
-                  android:paddingLeft="5dp" android:paddingBottom="10dp" android:gravity="right" android:textSize="20dp"
+                  android:paddingLeft="5dp" android:paddingBottom="10dp" android:textSize="20dp"
                   android:layout_below="@+id/task_status_label_title"
                   android:layout_marginTop="20dp"
                   android:layout_alignLeft="@+id/task_status_label_title"
-                  android:layout_gravity="left|center_vertical"/>
+                  android:layout_gravity="left|center_vertical" android:layout_marginLeft="20dp"
+                  android:gravity="center_horizontal"/>
         <TextView android:layout_width="80dp" android:layout_height="wrap_content" android:text="0"
                   android:id="@+id/task_status_expect_text" android:textSize="30dp" android:textStyle="bold"
                   android:textColor="#000"
-                  android:gravity="right"
                   android:layout_below="@+id/task_status_expect_view"
-                  android:layout_alignLeft="@+id/task_status_expect_view" android:layout_gravity="left|bottom"/>
+                  android:layout_alignLeft="@+id/task_status_expect_view" android:layout_gravity="center_vertical|bottom"
+                  android:layout_marginLeft="20dp" android:gravity="center_horizontal"/>
         <TextView android:layout_width="80dp" android:layout_height="wrap_content" android:text="@string/task_status_sent"
                   android:id="@+id/task_status_sent_view" android:textColor="#000" android:textStyle="bold"
                   android:paddingLeft="5dp" android:paddingBottom="10dp"
-                  android:gravity="right" android:textSize="20dp"
+                  android:textSize="20dp"
                   android:layout_centerHorizontal="true"
                   android:layout_marginTop="20dp"
                   android:layout_below="@+id/task_status_label_title"
-                  android:layout_alignLeft="@+id/task_status_label_title" android:layout_gravity="center"/>
+                  android:layout_alignLeft="@+id/task_status_label_title" android:layout_gravity="center"
+                  android:gravity="center_horizontal"/>
         <TextView android:layout_width="80dp" android:layout_height="wrap_content" android:text="0"
                   android:id="@+id/task_status_sent_text" android:textSize="30dp" android:textStyle="bold"
                   android:textColor="#000"
-                  android:gravity="right"
                   android:layout_alignParentLeft="false"
                   android:layout_alignParentTop="false" android:layout_below="@+id/task_status_sent_view"
                   android:layout_alignLeft="@+id/task_status_sent_view"
-                  android:layout_gravity="center_horizontal|bottom"/>
+                  android:layout_gravity="center_horizontal|bottom" android:gravity="center_horizontal"/>
         <TextView android:layout_width="80dp" android:layout_height="wrap_content"
                   android:text="@string/task_status_replied" android:id="@+id/task_status_replied_view"
                   android:textColor="#000" android:textStyle="bold" android:paddingLeft="5dp" android:paddingBottom="10dp"
-                  android:gravity="right"
                   android:textSize="20dp" android:layout_alignParentLeft="true"
                   android:layout_below="@+id/task_status_label_title"
                   android:layout_alignLeft="@+id/task_status_label_title" android:layout_marginTop="20dp"
-                  android:layout_gravity="right|center_vertical" android:layout_marginRight="20dp"/>
+                  android:layout_gravity="right|center_vertical" android:layout_marginRight="20dp"
+                  android:gravity="center_horizontal"/>
         <TextView android:layout_width="80dp" android:layout_height="wrap_content" android:text="0"
                   android:id="@+id/task_status_replied_text" android:textSize="30dp" android:textStyle="bold"
                   android:textColor="#000"
-                  android:gravity="right" android:layout_alignLeft="@+id/task_status_replied_view"
+                  android:layout_alignLeft="@+id/task_status_replied_view"
                   android:layout_below="@+id/task_status_replied_view" android:layout_gravity="right|bottom"
-                  android:layout_marginRight="20dp"/>
+                  android:layout_marginRight="20dp" android:gravity="center_horizontal"/>
     </FrameLayout>
 
     <FrameLayout
@@ -88,9 +89,12 @@
             android:layout_alignParentTop="true" android:layout_marginTop="200dp">
         <ProgressBar
                 android:layout_width="200dp"
-                android:layout_height="30dp"
+                android:layout_height="40dp"
                 android:id="@+id/send_progress" android:layout_gravity="center"
                 style="@android:style/Widget.ProgressBar.Horizontal" android:max="100" android:indeterminate="false"
                 android:progress="30"/>
+        <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
+                  android:text="提示：发送时请关闭不必要的安全软件" android:id="@+id/textView"
+                  android:textColor="#ffffff" android:layout_gravity="center" android:layout_marginTop="50dp"/>
     </FrameLayout>
 </RelativeLayout>

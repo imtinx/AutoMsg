@@ -48,9 +48,26 @@
               android:text="发送次数" android:id="@+id/textView5"
               android:layout_alignLeft="@+id/textView" android:layout_below="@+id/textView2" android:paddingTop="10dp"/>
     <EditText
-            android:layout_width="wrap_content"
+            android:layout_width="50dp"
             android:layout_height="wrap_content"
             android:text="10"
             android:id="@+id/task_config_item_edit_count" android:layout_alignLeft="@+id/task_config_item_edit_content"
             android:layout_alignTop="@+id/textView5" android:inputType="number" android:width="80dp"/>
+    <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="+1"
+            android:id="@+id/button_plus1"
+            android:layout_toRightOf="@+id/task_config_item_edit_count" android:layout_alignTop="@+id/task_config_item_edit_count"/>
+    <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="+10"
+            android:id="@+id/button_plus10" android:layout_toRightOf="@+id/button_plus1"
+            android:layout_alignTop="@+id/task_config_item_edit_count"/>
+    <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="0"
+            android:id="@+id/button_reset0" android:layout_toRightOf="@+id/button_plus10" android:layout_alignTop="@+id/task_config_item_edit_count"/>
 </RelativeLayout>
