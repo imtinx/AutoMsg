@@ -1,7 +1,9 @@
 package com.sohu.wls.app.automsg.tasklist;
 
 
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Message;
 import android.telephony.SmsManager;
@@ -28,12 +30,15 @@ public class SendSMSRunnable implements Runnable {
     public volatile boolean stop = false;
     private Iterator<SMSTaskModel> iterator;
     private ICommonService dbservice;
+    private PendingIntent sent;
+    private PendingIntent delivered;
     private static final int INTERVAL = 3000; //发送频率
     public SendSMSRunnable(Context context) {
         this.dbservice= new DBCommonService(context);
         this.tasklist = dbservice.getCurrentMonthSMSTaskDetail();
         this.iterator = tasklist.iterator();
-    }
+        this.sent = PendingIntent.getBroadcast(context, 0, new Intent(), 0);
+        this.delivered = PendingIntent.getBroadcast(context, 0, new Intent(), 0);    }
 
     @Override
     public void run() {
@@ -89,9 +94,10 @@ public class SendSMSRunnable implements Runnable {
      */
     private void send(SMSTaskModel task){
         SmsManager manager=SmsManager.getDefault();
+
         ArrayList<String> texts = manager.divideMessage(task.getSms_content());
         for(String text:texts){
-            manager.sendTextMessage(task.getSms_destnumber(),null, text,null,null);
+            manager.sendTextMessage(task.getSms_destnumber(),null, text,sent,delivered);
             Log.i(SendSMSRunnable.ACTIVITY_TAG,"send sms:{mobile:"+task.getSms_destnumber()+",text:"+text+"}");
         }
     }

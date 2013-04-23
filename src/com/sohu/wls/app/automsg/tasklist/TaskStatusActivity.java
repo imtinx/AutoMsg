@@ -10,7 +10,6 @@ import android.view.WindowManager;
 import android.widget.*;
 import com.sohu.wls.app.automsg.MyActivity;
 import com.sohu.wls.app.automsg.R;
-import com.sohu.wls.app.automsg.taskconfig.TaskConfigMainActivity;
 
 
 public class TaskStatusActivity extends Activity {
