@@ -28,7 +28,7 @@ public class SendSMSRunnable implements Runnable {
     public volatile boolean stop = false;
     private Iterator<SMSTaskModel> iterator;
     private ICommonService dbservice;
-    private static final int INTERVAL = 2000; //发送频率
+    private static final int INTERVAL = 3000; //发送频率
     public SendSMSRunnable(Context context) {
         this.dbservice= new DBCommonService(context);
         this.tasklist = dbservice.getCurrentMonthSMSTaskDetail();
