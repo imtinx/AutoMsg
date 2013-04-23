@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.*;
 import com.sohu.wls.app.automsg.MyActivity;
 import com.sohu.wls.app.automsg.R;
@@ -35,6 +36,8 @@ public class TaskStatusActivity extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
+        //不自动锁屏
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         //初始化布局
         setContentView(R.layout.task_status);
         //初始化发送状态栏

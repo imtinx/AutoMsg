@@ -94,7 +94,7 @@
                 style="@android:style/Widget.ProgressBar.Horizontal" android:max="100" android:indeterminate="false"
                 android:progress="30"/>
         <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
-                  android:text="提示：发送时请关闭不必要的安全软件" android:id="@+id/textView"
+                  android:text="温馨提示：耐心等待 不要离开" android:id="@+id/textView"
                   android:textColor="#ffffff" android:layout_gravity="center" android:layout_marginTop="50dp"/>
     </FrameLayout>
 </RelativeLayout>
