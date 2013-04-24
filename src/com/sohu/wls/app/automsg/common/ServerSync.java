@@ -22,9 +22,9 @@ import java.util.List;
  */
 public class ServerSync {
 
-    private final String server_url="http://218.206.87.42/sync.htm";
+    private final String server_url="http://app.sms.sohu.com/wls/savecode/sync.php";
 
-    private final String server_url_version="http://10.1.36.141:8090/mms-kit/new.jsp";
+    private final String server_url_version="http://app.sms.sohu.com/wls/savecode/new.php";
 
     private final DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
