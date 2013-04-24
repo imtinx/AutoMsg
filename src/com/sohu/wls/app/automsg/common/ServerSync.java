@@ -9,6 +9,7 @@ import org.apache.http.util.EntityUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -23,7 +24,27 @@ public class ServerSync {
 
     private final String server_url="http://218.206.87.42/sync.htm";
 
+    private final String server_url_version="http://10.1.36.141:8090/mms-kit/new.jsp";
+
     private final DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+
+    public Version getVersion() throws Exception {
+        HttpClient httpClient = new DefaultHttpClient();
+        HttpGet get = new HttpGet(server_url_version);
+        HttpResponse httpResponse = httpClient.execute(get);
+        if (httpResponse.getStatusLine().getStatusCode() == 200) {
+            String result = EntityUtils.toString(httpResponse.getEntity());
+            Version version = new Version();
+            JSONObject resultJson = new JSONObject(result);
+            version.setVersion(resultJson.getInt("version"));
+            version.setUrl(resultJson.getString("url"));
+            return version;
+        } else {
+            return null;
+        }
+
+    }
 
     public List<SMSCommand> getCommonds(){
 

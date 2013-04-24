@@ -3,28 +3,54 @@ package com.sohu.wls.app.automsg;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
+import android.os.Environment;
+import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 import com.sohu.wls.app.automsg.common.DBCommonService;
+import com.sohu.wls.app.automsg.common.ServerSync;
+import com.sohu.wls.app.automsg.common.Version;
 import com.sohu.wls.app.automsg.db.UserDetailOpenHelper;
 import com.sohu.wls.app.automsg.taskconfig.TaskConfigMainActivity;
 import com.sohu.wls.app.automsg.taskconfig.TaskConfigManageService;
 import com.sohu.wls.app.automsg.tasklist.HistoryTaskActivity;
 import com.sohu.wls.app.automsg.tasklist.TaskStatusActivity;
-
+import com.sohu.wls.app.automsg.util.UpdateManager;
 
 
 public class MyActivity extends Activity {
 
     private TaskConfigManageService taskConfigManageService;
     private UserDetailOpenHelper userDetailOpenHelper;
+    private UpdateManager updateManager;
+    public static final String TAG = "MyActivity";
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
+         if(isOpenNetwork()&&checkSDCard()){
+             try {
+                 ServerSync serverSync = new ServerSync();
+                 Version version = serverSync.getVersion();
+                 PackageInfo info = getPackageManager().getPackageInfo(getPackageName(), PackageManager.GET_CONFIGURATIONS);
+                 if(version.getVersion()>info.versionCode){
+                     updateManager = new UpdateManager(this);
+                     updateManager.checkUpdateInfo(version.getUrl());
+                 }
+             } catch (Exception e) {
+                 Log.e(TAG, "update error", e) ;
+             }
+         } else{
+             Toast.makeText(this, "当前网络连接不可用", Toast.LENGTH_LONG).show();
+         }
         taskConfigManageService = new TaskConfigManageService(new DBCommonService(this),this);
         if (userDetailOpenHelper == null){
             userDetailOpenHelper = new UserDetailOpenHelper(this);
@@ -82,5 +108,24 @@ public class MyActivity extends Activity {
             startActivity(new Intent(MyActivity.this, HistoryTaskActivity.class));
         }
     }
+
+
+    private boolean isOpenNetwork() {
+        ConnectivityManager connManager = (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
+        if(connManager.getActiveNetworkInfo() != null) {
+            return connManager.getActiveNetworkInfo().isAvailable();
+        }
+
+        return false;
+    }
+    // 检查SD卡状态
+    private boolean checkSDCard() {
+        if (Environment.getExternalStorageState().equals(
+                Environment.MEDIA_MOUNTED)) {
+            return true;
+        }
+        return false;
+    }
+
 
 }
