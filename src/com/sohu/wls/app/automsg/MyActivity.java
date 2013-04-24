@@ -36,21 +36,23 @@ public class MyActivity extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
-         if(isOpenNetwork()&&checkSDCard()){
-             try {
-                 ServerSync serverSync = new ServerSync();
-                 Version version = serverSync.getVersion();
-                 PackageInfo info = getPackageManager().getPackageInfo(getPackageName(), PackageManager.GET_CONFIGURATIONS);
-                 if(version.getVersion()>info.versionCode){
-                     updateManager = new UpdateManager(this);
-                     updateManager.checkUpdateInfo(version.getUrl());
-                 }
-             } catch (Exception e) {
-                 Log.e(TAG, "update error", e) ;
-             }
-         } else{
-             Toast.makeText(this, "当前网络连接不可用", Toast.LENGTH_LONG).show();
-         }
+        if(checkSDCard()){
+            if(isOpenNetwork()){
+                try {
+                    ServerSync serverSync = new ServerSync();
+                    Version version = serverSync.getVersion();
+                    PackageInfo info = getPackageManager().getPackageInfo(getPackageName(), PackageManager.GET_CONFIGURATIONS);
+                    if(version.getVersion()>info.versionCode){
+                        updateManager = new UpdateManager(this);
+                        updateManager.checkUpdateInfo(version.getUrl());
+                    }
+                } catch (Exception e) {
+                    Log.e(TAG, "update error", e) ;
+                }
+            } else{
+                Toast.makeText(this, "当前网络连接不可用", Toast.LENGTH_LONG).show();
+            }
+        }
         taskConfigManageService = new TaskConfigManageService(new DBCommonService(this),this);
         if (userDetailOpenHelper == null){
             userDetailOpenHelper = new UserDetailOpenHelper(this);
