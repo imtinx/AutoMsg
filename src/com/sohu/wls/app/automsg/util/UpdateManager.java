@@ -36,7 +36,7 @@ public class UpdateManager {
     private Context context;
 
     //提示语
-    private String updateMsg = "有最新的软件包哦，亲快下载吧~";
+    private String updateMsg = "有最新的软件包哦，现在更新？";
 
     //返回的安装包url
     private String apkUrl;
@@ -196,7 +196,8 @@ public class UpdateManager {
             return;
         }
         Intent i = new Intent(Intent.ACTION_VIEW);
-        i.setDataAndType(Uri.parse("file://" + apkfile.toString()), "application/vnd.android.package-archive");
+        i.setDataAndType(Uri.fromFile(apkfile), "application/vnd.android.package-archive");
+        i.addFlags(i.FLAG_ACTIVITY_NEW_TASK);
         context.startActivity(i);
     }
 }
