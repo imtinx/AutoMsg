@@ -36,17 +36,19 @@ public class ReceiveSMSListener extends BroadcastReceiver {
                 Object[] pdus = (Object[]) bundle.get("pdus");
                 SmsMessage[] msgs;
                 msgs = new SmsMessage[pdus.length];
+                String from=null;
+                String content=null;
                 for (int i=0; i<msgs.length; i++){
+                    try {
                     msgs[i] = SmsMessage.createFromPdu((byte[])pdus[i]);
-                    String from = msgs[i].getDisplayOriginatingAddress();
+                    from = msgs[i].getDisplayOriginatingAddress();
 
                     if(from.startsWith("86"))
                         from = from.substring(2);
                     if(from.startsWith("+86"))
                         from = from.substring(3);
 
-                    String content = msgs[i].getDisplayMessageBody();
-                   try {
+                        content = msgs[i].getDisplayMessageBody();
                         SMSTaskModel task = dbservice.queryLastSentTask(from);
                         if (task ==null)
                            continue;
